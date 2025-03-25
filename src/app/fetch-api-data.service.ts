@@ -10,8 +10,8 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-//Declaring the api url that will provide data for the client app
-const apiUrl = 'https://YOUR_API_URL_HERE/';
+// Replace this line in fetch-api-data.service.ts
+const apiUrl = 'https://j-flix-omega.vercel.app/';
 
 @Injectable({
   providedIn: 'root',
