@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+// src/styles.scss
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Global styles for Angular Material components
+mat-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+mat-form-field {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+}
