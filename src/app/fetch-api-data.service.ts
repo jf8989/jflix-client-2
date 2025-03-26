@@ -11,7 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Replace this line in fetch-api-data.service.ts
-const apiUrl = 'https://j-flix-omega.vercel.app/';
+const apiUrl = 'https://j-flix-omega.vercel.app';
 
 @Injectable({
   providedIn: 'root',
@@ -21,25 +21,36 @@ export class FetchApiDataService {
   // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {}
 
-  /**
-   * User registration
-   * @param userDetails
-   * @returns Observable of user data
-   */
   public userRegistration(userDetails: any): Observable<any> {
+    const formattedData = {
+      username: userDetails.username || userDetails.Username,
+      password: userDetails.password || userDetails.Password,
+      email: userDetails.email || userDetails.Email,
+      birthday: userDetails.birthday || userDetails.Birthday,
+    };
+
     return this.http
-      .post(apiUrl + 'users', userDetails)
+      .post(apiUrl + '/users', formattedData, {
+        // Note the slash here
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
       .pipe(catchError(this.handleError));
   }
 
-  /**
-   * User login
-   * @param userDetails
-   * @returns Observable of user data with token
-   */
   public userLogin(userDetails: any): Observable<any> {
+    const formattedData = {
+      username: userDetails.username || userDetails.Username,
+      password: userDetails.password || userDetails.Password,
+    };
+
     return this.http
-      .post(apiUrl + 'login', userDetails)
+      .post(apiUrl + '/login', formattedData, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
       .pipe(catchError(this.handleError));
   }
 
