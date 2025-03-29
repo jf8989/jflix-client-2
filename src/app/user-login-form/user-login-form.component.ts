@@ -54,7 +54,7 @@ export class UserLoginFormComponent {
           duration: 2000,
         });
         // Navigate to movies page after login (we'll implement this route later)
-        // this.router.navigate(['movies']);
+        this.router.navigate(['movies']);
       },
       error: (error) => {
         console.error(error);
