@@ -1,1 +1,52 @@
-<p>user-profile works!</p>
+<!-- src/app/user-profile/user-profile.component.html -->
+<div class="profile-container">
+    <div class="header">
+        <h1>User Profile</h1>
+        <div class="navigation-buttons">
+            <button mat-raised-button color="primary" (click)="goToMovies()">Movies</button>
+            <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+        </div>
+    </div>
+
+    <mat-card class="profile-card">
+        <mat-card-header>
+            <mat-card-title>Edit Profile</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form class="profile-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Username</mat-label>
+                    <input matInput [(ngModel)]="userData.Username" name="Username" placeholder="Username" required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput [(ngModel)]="userData.Email" name="Email" type="email" placeholder="Email"
+                        required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Birthday</mat-label>
+                    <input matInput [(ngModel)]="userData.Birthday" name="Birthday" type="date"
+                        placeholder="Birthday" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>New Password (Optional)</mat-label>
+                    <input matInput [(ngModel)]="userData.Password" name="Password" type="password"
+                        placeholder="Leave blank to keep current password" />
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+
+        <mat-card-actions class="profile-actions">
+            <button mat-raised-button color="primary" (click)="updateUser()">
+                Save Changes
+            </button>
+            <button mat-raised-button color="warn" (click)="deleteAccount()">
+                Delete Account
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

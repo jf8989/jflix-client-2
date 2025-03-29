@@ -1,1 +1,8 @@
-<p>synopsis-dialog works!</p>
+<!-- src/app/synopsis-dialog/synopsis-dialog.component.html -->
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+    <p>{{ data.description }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

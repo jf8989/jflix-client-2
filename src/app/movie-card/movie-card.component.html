@@ -1,1 +1,41 @@
-<p>movie-card works!</p>
+<!-- src/app/movie-card/movie-card.component.html -->
+<div class="movie-page">
+    <div class="header">
+        <h1>Movies</h1>
+        <div class="navigation-buttons">
+            <button mat-raised-button color="primary" (click)="goToProfile()">Profile</button>
+            <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="movie-grid">
+        <mat-card *ngFor="let movie of movies" class="movie-card">
+            <mat-card-header class="movie-card-header">
+                <mat-card-title>{{ movie.Title }}</mat-card-title>
+                <mat-card-subtitle>{{ movie.Year }}</mat-card-subtitle>
+            </mat-card-header>
+
+            <img mat-card-image src="{{ movie.ImagePath }}" alt="{{ movie.Title }}" class="movie-image" />
+
+            <mat-card-content>
+                <p class="movie-director">Directed by: {{ movie.Director.Name }}</p>
+            </mat-card-content>
+
+            <mat-card-actions class="movie-card-actions">
+                <button mat-button color="primary" (click)="openGenreDialog(movie.Genre)">
+                    GENRE
+                </button>
+                <button mat-button color="primary" (click)="openDirectorDialog(movie.Director)">
+                    DIRECTOR
+                </button>
+                <button mat-button color="primary" (click)="openSynopsisDialog(movie.Title, movie.Description)">
+                    SYNOPSIS
+                </button>
+                <button mat-icon-button (click)="toggleFavorite(movie._id)"
+                    [color]="isFavorite(movie._id) ? 'accent' : ''">
+                    <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

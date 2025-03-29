@@ -1,1 +1,10 @@
-<p>director-dialog works!</p>
+<!-- src/app/director-dialog/director-dialog.component.html -->
+<h2 mat-dialog-title>{{ data.director.Name }}</h2>
+<mat-dialog-content>
+    <p><strong>Birth:</strong> {{ data.director.Birth }}</p>
+    <p *ngIf="data.director.Death"><strong>Death:</strong> {{ data.director.Death }}</p>
+    <p>{{ data.director.Bio }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

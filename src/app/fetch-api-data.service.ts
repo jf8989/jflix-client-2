@@ -119,11 +119,15 @@ export class FetchApiDataService {
 
   /**
    * Get user data
+   * @param username (optional) If not provided, gets from localStorage
    * @returns Observable of user data
    */
-  getUser(): Observable<any> {
+  getUser(username?: string): Observable<any> {
     const token = localStorage.getItem('token');
-    const username = localStorage.getItem('user');
+    // If username is not provided, get it from localStorage
+    if (!username) {
+      username = localStorage.getItem('user') || undefined;
+    }
     return this.http
       .get(apiUrl + 'users/' + username, {
         headers: new HttpHeaders({

@@ -1,0 +1,32 @@
+/* src/app/welcome-page/welcome-page.component.scss */
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 16px;
+
+    h1 {
+        margin-bottom: 32px;
+        font-size: 3rem;
+
+        @media (max-width: 600px) {
+            font-size: 2rem;
+        }
+    }
+
+    .button-container {
+        display: flex;
+        gap: 16px;
+
+        @media (max-width: 400px) {
+            flex-direction: column;
+        }
+
+        button {
+            min-width: 120px;
+        }
+    }
+}
