@@ -46,8 +46,26 @@ export class MovieCardComponent implements OnInit {
    */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      this.movies = resp;
-      console.log(this.movies);
+      console.log('Original API response:', resp);
+
+      // Transform the API response to match expected property names
+      this.movies = resp.map((movie: any) => ({
+        _id: movie._id,
+        Title: movie.title, // Map title to Title
+        Year: movie.releaseYear,
+        ImagePath: movie.imageURL, // Map imageURL to ImagePath
+        Description: movie.description, // Map description to Description
+        Director: {
+          Name: movie.director?.name || '',
+          Bio: movie.director?.bio || '',
+        },
+        Genre:
+          Array.isArray(movie.genres) && movie.genres.length > 0
+            ? { Name: movie.genres[0].name, Description: '' }
+            : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
+      }));
+
+      console.log('Transformed movies:', this.movies);
     });
   }
 
