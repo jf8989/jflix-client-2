@@ -34,14 +34,30 @@
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+    gap: 16px; // Added gap for better spacing between form fields
 }
 
 .profile-actions {
     display: flex;
     justify-content: space-between;
+    padding: 16px; // Added padding for better spacing
 
     @media (max-width: 400px) {
         flex-direction: column;
         gap: 10px;
     }
+}
+
+// Added styles for loading spinner
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+// Added styles for form fields to ensure proper spacing
+mat-form-field {
+    width: 100%;
+    margin-bottom: 8px;
 }

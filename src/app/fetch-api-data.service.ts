@@ -1,14 +1,13 @@
 // src/app/fetch-api-data.service.ts
 
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import {
   HttpClient,
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 // API URL
 const apiUrl = 'https://j-flix-omega.vercel.app';
@@ -118,16 +117,16 @@ export class FetchApiDataService {
 
   /**
    * Get user data
-   * @param username (optional) If not provided, gets from localStorage
-   * @returns Observable of user data
+   * Note: We don't actually use this in the profile component now
+   * as we're loading directly from localStorage first
    */
-  getUser(username?: string): Observable<any> {
+  getUser(): Observable<any> {
     const token = localStorage.getItem('token');
-    // If username is not provided, get it from localStorage properly
-    if (!username) {
-      const userObj = JSON.parse(localStorage.getItem('user') || '{}');
-      username = userObj.Username || userObj.username;
-    }
+    const userObj = JSON.parse(localStorage.getItem('user') || '{}');
+    const username = userObj.Username;
+
+    console.log('getUser using Username:', username);
+
     return this.http
       .get(apiUrl + '/users/' + username, {
         headers: new HttpHeaders({
@@ -183,32 +182,38 @@ export class FetchApiDataService {
   }
 
   /**
-   * Edit user information
+   * Edit user information - matches pattern in movie-card component
    * @param userDetails
    * @returns Observable of updated user data
    */
   editUser(userDetails: any): Observable<any> {
     const token = localStorage.getItem('token');
     const userObj = JSON.parse(localStorage.getItem('user') || '{}');
-    const username = userObj.Username || userObj.username;
+    const username = userObj.Username;
+
+    console.log('editUser for Username:', username);
+    console.log('editUser data:', userDetails);
 
     return this.http
       .put(apiUrl + '/users/' + username, userDetails, {
         headers: new HttpHeaders({
           Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
         }),
       })
       .pipe(map(this.extractResponseData), catchError(this.handleError));
   }
 
   /**
-   * Delete user account
+   * Delete user account - matches pattern in movie-card component
    * @returns Observable of delete status
    */
   deleteUser(): Observable<any> {
     const token = localStorage.getItem('token');
     const userObj = JSON.parse(localStorage.getItem('user') || '{}');
-    const username = userObj.Username || userObj.username;
+    const username = userObj.Username;
+
+    console.log('deleteUser for Username:', username);
 
     return this.http
       .delete(apiUrl + '/users/' + username, {
@@ -246,13 +251,53 @@ export class FetchApiDataService {
 
   // Error handling function
   private handleError(error: HttpErrorResponse): any {
+    console.log('===== HANDLING API ERROR =====');
+    console.log('Full error object:', error);
+
     if (error.error instanceof ErrorEvent) {
-      console.error('Some error occurred:', error.error.message);
+      // Client-side error (network issues, etc.)
+      console.error('Client-side error occurred:', error.error.message);
+      console.error('Error event:', error.error);
     } else {
-      console.error(
-        `Error Status code ${error.status}, ` + `Error body is: ${error.error}`
-      );
+      // Server-side error (4xx, 5xx responses)
+      console.error(`Server-side error - Status code: ${error.status}`);
+      console.error(`Error body: ${JSON.stringify(error.error)}`);
+      console.error(`Error message: ${error.message}`);
+
+      // Check for specific status codes
+      if (error.status === 0) {
+        console.error(
+          'Network error or CORS issue - API request did not complete'
+        );
+        console.error(
+          'Check if API is running and CORS is properly configured'
+        );
+      } else if (error.status === 401) {
+        console.error('Authentication error - Invalid or expired token');
+        console.error('User might need to log in again');
+      } else if (error.status === 404) {
+        console.error('Resource not found - Check endpoint URL and parameters');
+      } else if (error.status >= 500) {
+        console.error('Server error - Issue on the API side');
+      }
     }
-    return throwError('Something bad happened; please try again later.');
+
+    // Check for connection issues
+    if (!navigator.onLine) {
+      console.error('Browser is offline - Check internet connection');
+    }
+
+    // Log request details if available
+    if (error.url) {
+      console.error('Request URL:', error.url);
+    }
+
+    return throwError(
+      () =>
+        new Error(
+          'Something bad happened; please try again later. ' +
+            (error.error?.message || error.message || 'Unknown error')
+        )
+    );
   }
 }
