@@ -1,3 +1,4 @@
+// src/app/movie-card/movie-card.component.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GenreDialogComponent } from './genre-dialog.component';
@@ -8,9 +9,8 @@ describe('GenreDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GenreDialogComponent]
-    })
-    .compileComponents();
+      imports: [GenreDialogComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GenreDialogComponent);
     component = fixture.componentInstance;

@@ -1,3 +1,4 @@
+// src/app/movie-card/movie-card.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MovieCardComponent } from './movie-card.component';
@@ -8,9 +9,8 @@ describe('MovieCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MovieCardComponent]
-    })
-    .compileComponents();
+      imports: [MovieCardComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MovieCardComponent);
     component = fixture.componentInstance;

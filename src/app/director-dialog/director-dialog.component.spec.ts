@@ -1,3 +1,4 @@
+// src/app/director-dialog/director-dialog.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DirectorDialogComponent } from './director-dialog.component';
@@ -8,9 +9,8 @@ describe('DirectorDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DirectorDialogComponent]
-    })
-    .compileComponents();
+      imports: [DirectorDialogComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DirectorDialogComponent);
     component = fixture.componentInstance;

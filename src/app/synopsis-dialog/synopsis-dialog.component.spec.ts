@@ -1,3 +1,4 @@
+// src/app/synopsis-dialog/synopsis-dialog.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SynopsisDialogComponent } from './synopsis-dialog.component';
@@ -8,9 +9,8 @@ describe('SynopsisDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SynopsisDialogComponent]
-    })
-    .compileComponents();
+      imports: [SynopsisDialogComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SynopsisDialogComponent);
     component = fixture.componentInstance;
