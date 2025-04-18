@@ -11,7 +11,10 @@
     <div class="movie-grid">
         <mat-card *ngFor="let movie of movies" class="movie-card">
             <mat-card-header class="movie-card-header">
-                <mat-card-title>{{ movie.Title }}</mat-card-title>
+                <!-- Add matTooltip here -->
+                <mat-card-title [matTooltip]="movie.Title" matTooltipPosition="above">
+                    {{ movie.Title }}
+                </mat-card-title>
                 <mat-card-subtitle>{{ movie.Year }}</mat-card-subtitle>
             </mat-card-header>
 

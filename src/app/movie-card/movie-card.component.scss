@@ -47,17 +47,48 @@
 }
 
 .movie-card-header {
-    height: 80px;
-    overflow: hidden;
+    height: 85px; // Keep slightly increased height
+    padding: 16px; // Keep padding
+    box-sizing: border-box; // Keep box-sizing
+    display: flex; // Use Flexbox again
+    flex-direction: column; // Stack items vertically
+    justify-content: flex-start; // Align items to the top of the container
+
+    // Target the title for clamping
+    mat-card-title {
+        order: 1; // Ensure title comes first in flow
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; // Limit to 3 lines
+        -webkit-box-orient: vertical;
+        white-space: normal; // Allow wrapping
+        line-height: 1.2em; // Explicit line-height helps calculation
+        // max-height: calc(1.2em * 3); // REMOVE explicit max-height, rely on line-clamp
+        margin-bottom: 2px; // Small space below title
+    }
+
+    // Target the subtitle
+    mat-card-subtitle {
+        order: 2; // Ensure subtitle comes after title in flow
+        line-height: 1.2em;
+        margin-top: 0; // Ensure no negative margin
+        display: block; // Ensure block behavior
+        overflow: hidden; // Hide overflow just in case
+        text-overflow: ellipsis; // Add ellipsis if subtitle itself is too long
+        white-space: nowrap; // Prevent subtitle wrapping
+        flex-shrink: 0; // Prevent subtitle from shrinking if space is tight
+    }
 }
 
 .movie-image {
-    height: 400px;
+    // Styles from fix #1 above
     object-fit: cover;
-
-    @media (max-width: 600px) {
-        height: 300px;
-    }
+    width: 100%;
+    height: auto;
+    display: block;
+    // Ensure image doesn't pull itself up
+    margin-top: 0;
 }
 
 .movie-director {
