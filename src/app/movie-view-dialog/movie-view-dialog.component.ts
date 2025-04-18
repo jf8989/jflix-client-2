@@ -28,8 +28,21 @@ import { FetchApiDataService } from '../fetch-api-data.service'; // For favorite
   templateUrl: './movie-view-dialog.component.html',
   styleUrls: ['./movie-view-dialog.component.scss'], // Corrected styleUrl
 })
+
+/**
+ * Component responsible for displaying detailed movie information within a MatDialog.
+ * Receives movie data via MAT_DIALOG_DATA injection. Allows toggling favorite status
+ * for the displayed movie and provides a close button.
+ */
 export class MovieViewDialogComponent implements OnInit {
+  /**
+   * Holds the movie data object passed into the dialog via MAT_DIALOG_DATA.
+   */
   movie: any; // To hold the movie data passed in
+  /**
+   * Tracks the favorite status of the currently displayed movie within this dialog instance.
+   * Initialized by checking localStorage.
+   */
   isFav: boolean = false; // To track favorite status within the dialog
 
   constructor(
@@ -46,7 +59,9 @@ export class MovieViewDialogComponent implements OnInit {
   }
 
   /**
-   * Checks the initial favorite status from localStorage.
+   * Checks the initial favorite status of the movie by looking up its ID
+   * in the FavoriteMovies array stored within the user object in localStorage.
+   * Updates the `isFav` property.
    */
   checkFavoriteStatus(): void {
     const userObj = JSON.parse(localStorage.getItem('user') || '{}');
@@ -55,7 +70,7 @@ export class MovieViewDialogComponent implements OnInit {
   }
 
   /**
-   * Closes the dialog.
+   * Closes the dialog window using MatDialogRef.
    */
   closeDialog(): void {
     this.dialogRef.close();
@@ -63,6 +78,8 @@ export class MovieViewDialogComponent implements OnInit {
 
   /**
    * Toggles the favorite status of the movie displayed in the dialog.
+   * Calls the appropriate FetchApiDataService method, updates the local `isFav` state,
+   * updates localStorage via `updateLocalStorageFavorites`, and shows feedback via MatSnackBar.
    */
   toggleFavorite(): void {
     const movieId = this.movie._id;
@@ -102,9 +119,9 @@ export class MovieViewDialogComponent implements OnInit {
   }
 
   /**
-   * Updates the FavoriteMovies array in localStorage.
-   * @param movieId The ID of the movie to add or remove.
-   * @param add True to add, false to remove.
+   * Updates the FavoriteMovies array within the user object stored in localStorage.
+   * @param movieId The ID of the movie being added or removed.
+   * @param add Boolean flag: true if adding, false if removing.
    * @private
    */
   private updateLocalStorageFavorites(movieId: string, add: boolean): void {
@@ -127,9 +144,10 @@ export class MovieViewDialogComponent implements OnInit {
   }
 
   /**
-   * Helper function to format rating (similar to React version).
-   * @param rating The rating value.
-   * @returns Formatted rating string or 'N/A'.
+   * Helper function to format a movie rating to one decimal place.
+   * Returns 'N/A' if the rating is invalid or not provided.
+   * @param rating The rating value (can be number, string, or undefined).
+   * @returns Formatted rating string (e.g., "7.5") or "N/A".
    */
   formatRating(rating: number | string | undefined): string {
     if (rating === undefined || rating === null || rating === '') return 'N/A';

@@ -33,6 +33,7 @@ import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog
  * Fetches movie data and user favorites using FetchApiDataService.
  * Renders movie cards with details and actions (view genre/director/synopsis, toggle favorite).
  * Provides navigation to the user profile and logout functionality.
+ * Clicking on a movie image opens the MovieViewDialogComponent.
  */
 export class MovieCardComponent implements OnInit {
   /**
@@ -219,6 +220,8 @@ export class MovieCardComponent implements OnInit {
 
   /**
    * Opens the MovieViewDialogComponent to show details for the selected movie.
+   * Triggered by clicking the movie image. Subscribes to dialog close events
+   * to refresh the favorite status from localStorage.
    * @param movie The movie object to display.
    */
   openMovieViewDialog(movie: any): void {

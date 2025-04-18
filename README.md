@@ -6,26 +6,33 @@ This application interacts with the [j-Flix API](<Your API Repo URL - Add Link H
 
 ## Live Demo ✨
 
-View the deployed application on Vercel: [https://j-flix-angular-client-alpha.vercel.app/](https://jflix-client-2.vercel.app/welcome)
+View the deployed application on Vercel: [https://jflix-client-2.vercel.app/welcome](https://jflix-client-2.vercel.app/welcome) _(Confirm this is your correct Vercel URL)_
 
 ## Features 🚀
 
-*   **User Authentication:** Secure user registration and login forms.
-*   **Movie Browsing:** Displays a list of movies fetched from the API in responsive cards.
-*   **Detailed Views:** Provides dialog popups for:
-    *   Movie Synopsis
-    *   Genre Details
-    *   Director Details (Name, Bio, etc.)
-*   **Favorites Management:** Allows users to add or remove movies from their personal favorites list. Favorite status is persisted via the API and reflected visually.
-*   **User Profile:** Dedicated view for users to see and update their profile information (Email, Birthday, Password). Option to deregister the account.
+*   **User Authentication:** Secure user registration and login forms presented in dialogs.
+*   **Movie Browsing:** Displays a list of movies fetched from the API in responsive cards on the main `/movies` route.
+*   **Detailed Movie View:** Clicking on a movie's image opens a modal dialog (`MovieViewDialogComponent`) displaying comprehensive details:
+    *   Full Poster Image
+    *   Synopsis/Description
+    *   Rating and Year
+    *   Director Information (Name, Bio)
+    *   Genre Information
+    *   Ability to Add/Remove from Favorites directly within the dialog.
+*   **Quick Info Dialogs:** Buttons on the main movie cards provide quick access to specific details via dialogs:
+    *   Genre Details (`GenreDialogComponent`)
+    *   Director Details (`DirectorDialogComponent`)
+    *   Synopsis (`SynopsisDialogComponent`)
+*   **Favorites Management:** Allows users to add or remove movies from their personal favorites list (via main card icon or detail dialog button). Favorite status is persisted via the API and reflected visually.
+*   **User Profile:** Dedicated view (`/profile`) for users to see and update their profile information (Email, Birthday, Password). Option to deregister the account.
 *   **Responsive Design:** Built with Angular Material to ensure usability across different screen sizes (mobile-first approach).
-*   **Routing:** Utilizes Angular Router for navigation between Welcome, Movies, and Profile views.
+*   **Routing:** Utilizes Angular Router for navigation between Welcome (`/welcome`), Movies (`/movies`), and Profile (`/profile`) views.
 
 ## Technical Stack 🛠️
 
 *   **Framework:** Angular (v19+) with Standalone Components
 *   **Language:** TypeScript
-*   **UI Library:** Angular Material
+*   **UI Library:** Angular Material (Cards, Dialogs, Buttons, Icons, Tooltips, etc.)
 *   **State Management:** RxJS (for handling asynchronous operations), localStorage (for token/user persistence)
 *   **HTTP Client:** Angular `HttpClient` for API communication
 *   **Code Documentation:** TypeDoc
@@ -68,6 +75,7 @@ To create an optimized production build:
 
 ```bash
 ng build
+```
 
 The build artifacts will be stored in the `dist/j-flix-angular-client` directory.
 
