@@ -1,59 +1,107 @@
-# JFlixAngularClient
+# J-Flix Angular Client (J-Flix 2.0) 🎬
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.4.
+This project is the Angular-based frontend client for the j-Flix application. It allows users to browse movies, manage their profiles, and keep track of their favorite films.
 
-## Development server
+This application interacts with the [j-Flix API](<Your API Repo URL - Add Link Here>) for data and authentication.
 
-To start a local development server, run:
+## Live Demo ✨
 
-```bash
-ng serve
-```
+View the deployed application on Vercel: [https://j-flix-angular-client-alpha.vercel.app/](https://jflix-client-2.vercel.app/welcome)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Features 🚀
 
-## Code scaffolding
+*   **User Authentication:** Secure user registration and login forms.
+*   **Movie Browsing:** Displays a list of movies fetched from the API in responsive cards.
+*   **Detailed Views:** Provides dialog popups for:
+    *   Movie Synopsis
+    *   Genre Details
+    *   Director Details (Name, Bio, etc.)
+*   **Favorites Management:** Allows users to add or remove movies from their personal favorites list. Favorite status is persisted via the API and reflected visually.
+*   **User Profile:** Dedicated view for users to see and update their profile information (Email, Birthday, Password). Option to deregister the account.
+*   **Responsive Design:** Built with Angular Material to ensure usability across different screen sizes (mobile-first approach).
+*   **Routing:** Utilizes Angular Router for navigation between Welcome, Movies, and Profile views.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Technical Stack 🛠️
 
-```bash
-ng generate component component-name
-```
+*   **Framework:** Angular (v19+) with Standalone Components
+*   **Language:** TypeScript
+*   **UI Library:** Angular Material
+*   **State Management:** RxJS (for handling asynchronous operations), localStorage (for token/user persistence)
+*   **HTTP Client:** Angular `HttpClient` for API communication
+*   **Code Documentation:** TypeDoc
+*   **Build Tool:** Angular CLI
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Backend API Connection 🔌
 
-```bash
-ng generate --help
-```
+This frontend application consumes the j-Flix REST API hosted at:
+`https://j-flix-omega.vercel.app`
 
-## Building
+## Getting Started 🔧
 
-To build the project run:
+**Prerequisites:**
+
+*   Node.js and npm (Check versions using `node -v` and `npm -v`)
+*   Angular CLI (`npm install -g @angular/cli`)
+
+**Installation & Running Locally:**
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-angular-repo-url>
+    cd J-Flix-Angular-client
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run the development server:**
+    ```bash
+    ng serve --open
+    ```
+    Navigate to `http://localhost:4200/`. The app will automatically reload if you change any source files.
+
+*(Ensure the backend API is running and accessible for the application to function correctly).*
+
+## Building for Production 📦
+
+To create an optimized production build:
 
 ```bash
 ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The build artifacts will be stored in the `dist/j-flix-angular-client` directory.
 
-## Running unit tests
+## Running Unit Tests 🧪
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+To execute the unit tests via [Karma](https://karma-runner.github.io):
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+*(Note: End-to-end tests are not configured in this project setup).*
 
-For end-to-end (e2e) testing, run:
+## Code Documentation (TypeDoc) 📚
 
-```bash
-ng e2e
-```
+Detailed documentation for the Angular components, services, and methods has been generated using TypeDoc.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+**To view the documentation:**
 
-## Additional Resources
+1.  Ensure you have run `npm install` to install dev dependencies (including `typedoc`).
+2.  Generate the documentation (if not already present):
+    ```bash
+    npx typedoc src/app --out docs/typedoc --entryPointStrategy expand
+    ```
+3.  Open the generated `docs/typedoc/index.html` file in your web browser.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Deployment ☁️
+
+This application is automatically deployed to Vercel upon pushes to the main branch.
+
+## License 📄
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0). See the [LICENSE.md](LICENSE.md) file for details.
+
+## Author 👨‍💻
+
+**Juan Francisco Marcenaro A.** - Full Stack Developer in training
