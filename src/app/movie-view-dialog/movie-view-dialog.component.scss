@@ -1,0 +1,106 @@
+/* src/app/movie-view-dialog/movie-view-dialog.component.scss */
+@use '@angular/material' as mat;
+
+.movie-view-dialog-container {
+    max-height: 90vh; // Limit dialog height
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px; // Add space below title
+    padding-right: 0; // Remove default padding if close button is inside
+}
+
+.close-button {
+    // Position close button if needed, or rely on flex justify-content
+}
+
+.dialog-content {
+    padding: 0 24px 24px 24px; // Adjust padding
+    overflow-y: auto; // Allow content scrolling
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr; // Mobile first: single column
+    gap: 24px;
+
+    @media (min-width: 768px) {
+        // Desktop: two columns
+        grid-template-columns: 300px 1fr; // Fixed image width, flexible details
+    }
+}
+
+.image-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    .movie-poster {
+        width: 100%;
+        max-width: 300px; // Limit max width on mobile too
+        height: auto;
+        border-radius: 8px;
+        object-fit: cover;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .meta-info {
+        display: flex;
+        gap: 12px;
+        font-size: 0.9em;
+        color: rgba(0, 0, 0, 0.7);
+
+        .rating,
+        .year {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .rating {
+            color: #e50914; // Or use theme color
+            font-weight: bold;
+        }
+    }
+
+    .favorite-button {
+        width: 100%;
+        max-width: 300px;
+
+        mat-icon {
+            margin-right: 8px;
+        }
+    }
+}
+
+.details-column {
+    h3 {
+        font-size: 1.2em;
+        font-weight: 500;
+        margin-top: 0;
+        margin-bottom: 8px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 8px;
+    }
+
+    p {
+        margin-bottom: 16px;
+        line-height: 1.6;
+        font-size: 0.95em;
+        color: rgba(0, 0, 0, 0.8);
+
+        strong {
+            color: rgba(0, 0, 0, 0.9);
+        }
+    }
+
+    .description {
+        font-size: 1em;
+    }
+}

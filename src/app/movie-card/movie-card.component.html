@@ -9,32 +9,37 @@
     </div>
 
     <div class="movie-grid">
+        <!-- === REMOVE (click) from here === -->
         <mat-card *ngFor="let movie of movies" class="movie-card">
             <mat-card-header class="movie-card-header">
-                <!-- Add matTooltip here -->
                 <mat-card-title [matTooltip]="movie.Title" matTooltipPosition="above">
                     {{ movie.Title }}
                 </mat-card-title>
                 <mat-card-subtitle>{{ movie.Year }}</mat-card-subtitle>
             </mat-card-header>
 
-            <img mat-card-image src="{{ movie.ImagePath }}" alt="{{ movie.Title }}" class="movie-image" />
+            <!-- === ADD (click) here === -->
+            <img mat-card-image [src]="movie.ImagePath" [alt]="movie.Title" class="movie-image"
+                (click)="openMovieViewDialog(movie)" />
 
             <mat-card-content>
                 <p class="movie-director">Directed by: {{ movie.Director.Name }}</p>
             </mat-card-content>
 
             <mat-card-actions class="movie-card-actions">
-                <button mat-button color="primary" (click)="openGenreDialog(movie.Genre)">
+                <!-- === ADD $event.stopPropagation() to these buttons === -->
+                <button mat-button color="primary" (click)="openGenreDialog(movie.Genre); $event.stopPropagation()">
                     GENRE
                 </button>
-                <button mat-button color="primary" (click)="openDirectorDialog(movie.Director)">
+                <button mat-button color="primary"
+                    (click)="openDirectorDialog(movie.Director); $event.stopPropagation()">
                     DIRECTOR
                 </button>
-                <button mat-button color="primary" (click)="openSynopsisDialog(movie.Title, movie.Description)">
+                <button mat-button color="primary"
+                    (click)="openSynopsisDialog(movie.Title, movie.Description); $event.stopPropagation()">
                     SYNOPSIS
                 </button>
-                <button mat-icon-button (click)="toggleFavorite(movie._id)"
+                <button mat-icon-button (click)="toggleFavorite(movie._id); $event.stopPropagation()"
                     [color]="isFavorite(movie._id) ? 'accent' : ''">
                     <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
                 </button>

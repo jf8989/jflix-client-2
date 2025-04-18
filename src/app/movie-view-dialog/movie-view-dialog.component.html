@@ -1,0 +1,64 @@
+<!-- src/app/movie-view-dialog/movie-view-dialog.component.html -->
+<div class="movie-view-dialog-container">
+    <h2 mat-dialog-title class="dialog-title">
+        {{ movie.Title }}
+        <button mat-icon-button class="close-button" (click)="closeDialog()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </h2>
+
+    <mat-dialog-content class="dialog-content">
+        <div class="content-grid">
+            <!-- Left Column: Image & Actions -->
+            <div class="image-column">
+                <img [src]="movie.ImagePath" [alt]="movie.Title" class="movie-poster" />
+                <div class="meta-info">
+                    <span class="rating">★ {{ formatRating(movie.rating) }}</span>
+                    <span class="year">{{ movie.Year }}</span>
+                    <!-- Add Series specific info if needed -->
+                </div>
+                <button mat-flat-button class="favorite-button" [color]="isFav ? 'accent' : 'primary'"
+                    (click)="toggleFavorite()">
+                    <mat-icon>{{ isFav ? 'favorite' : 'favorite_border' }}</mat-icon>
+                    {{ isFav ? 'Remove from Favorites' : 'Add to Favorites' }}
+                </button>
+            </div>
+
+            <!-- Right Column: Details -->
+            <div class="details-column">
+                <h3>Description</h3>
+                <p class="description">{{ movie.Description }}</p>
+
+                <h3>Director</h3>
+                <p><strong>Name:</strong> {{ movie.Director?.Name || 'N/A' }}</p>
+                <p *ngIf="movie.Director?.Bio"><strong>Bio:</strong> {{ movie.Director.Bio }}</p>
+                <!-- Add Birth Year if available -->
+
+                <h3>Genre</h3>
+                <p>{{ movie.Genre?.Name || 'N/A' }}</p>
+                <!-- Add Genre Description if available -->
+
+                <!-- Add Cast/Actors if available in your movie object -->
+                <!-- <h3>Cast</h3> -->
+                <!-- <div class="chips-container"> -->
+                <!--   <mat-chip-listbox aria-label="Actors"> -->
+                <!--     <mat-chip *ngFor="let actor of movie.Actors">{{ actor }}</mat-chip> -->
+                <!--   </mat-chip-listbox> -->
+                <!-- </div> -->
+
+            </div>
+        </div>
+
+        <!-- Optional: Similar Movies Section (Requires more logic) -->
+        <!-- <div class="similar-movies-section"> -->
+        <!--   <h3>More Like This</h3> -->
+        <!--   ... slider ... -->
+        <!-- </div> -->
+
+    </mat-dialog-content>
+
+    <!-- Actions can be minimal if close is in title -->
+    <!-- <mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()">Close</button>
+  </mat-dialog-actions> -->
+</div>

@@ -39,6 +39,7 @@
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    // cursor: pointer; // <--- REMOVE this line
 
     &:hover {
         transform: translateY(-5px);
@@ -82,13 +83,12 @@
 }
 
 .movie-image {
-    // Styles from fix #1 above
     object-fit: cover;
     width: 100%;
     height: auto;
     display: block;
-    // Ensure image doesn't pull itself up
     margin-top: 0;
+    cursor: pointer;
 }
 
 .movie-director {

@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog.component';
 
 @Component({
   selector: 'app-movie-card',
@@ -213,6 +214,31 @@ export class MovieCardComponent implements OnInit {
     this.dialog.open(SynopsisDialogComponent, {
       data: { title, description },
       width: '400px',
+    });
+  }
+
+  /**
+   * Opens the MovieViewDialogComponent to show details for the selected movie.
+   * @param movie The movie object to display.
+   */
+  openMovieViewDialog(movie: any): void {
+    this.dialog.open(MovieViewDialogComponent, {
+      data: movie, // Pass the movie data
+      width: '80%', // Adjust width as needed
+      maxWidth: '900px', // Max width for larger screens
+      autoFocus: false, // Prevent autofocus on first element
+      // panelClass: 'movie-view-dialog-panel' // Optional class for backdrop styling
+    });
+
+    // Subscribe to dialog close event to potentially refresh favorites icon state
+    // This ensures the heart icon on the card updates if favorited/unfavorited in the dialog
+    // Note: Requires the dialog component to potentially emit an event or pass back data on close,
+    // or simply re-fetch favorites here. Simpler for now is to rely on localStorage sync.
+    // We already update localStorage within the dialog's toggleFavorite method.
+    // Let's ensure the card component re-reads from localStorage after dialog closes.
+    this.dialog.afterAllClosed.subscribe(() => {
+      console.log('Dialog closed, checking favorites again from localStorage');
+      this.getFavorites(); // Re-fetch favorites from localStorage to update icons
     });
   }
 
