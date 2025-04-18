@@ -15,11 +15,25 @@ const apiUrl = 'https://j-flix-omega.vercel.app';
 @Injectable({
   providedIn: 'root',
 })
+
+/**
+ * Service responsible for making API calls to the j-Flix backend.
+ * Provides methods for user authentication, fetching movie/director/genre data,
+ * and managing user profiles and favorites.
+ *
+ * @Injectable Provided in root, making it a singleton available throughout the application.
+ */
 export class FetchApiDataService {
   // Inject the HttpClient module to the constructor params
   // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {}
 
+  /**
+   * Sends a POST request to register a new user.
+   * @param userDetails - An object containing user registration data (Username, Password, Email, Birthday).
+   * @returns An Observable containing the API response upon successful registration.
+   * @public
+   */
   public userRegistration(userDetails: any): Observable<any> {
     const formattedData = {
       username: userDetails.username || userDetails.Username,
@@ -37,6 +51,12 @@ export class FetchApiDataService {
       .pipe(catchError(this.handleError));
   }
 
+  /**
+   * Sends a POST request to log in a user.
+   * @param userDetails - An object containing user login credentials (Username, Password).
+   * @returns An Observable containing the API response (user object and JWT token) upon successful login.
+   * @public
+   */
   public userLogin(userDetails: any): Observable<any> {
     const formattedData = {
       username: userDetails.username || userDetails.Username,
@@ -53,8 +73,10 @@ export class FetchApiDataService {
   }
 
   /**
-   * Get all movies
-   * @returns Observable of movie data
+   * Sends a GET request to fetch all movies from the API.
+   * Requires a valid JWT token in the Authorization header.
+   * @returns An Observable containing an array of movie objects.
+   * @public
    */
   getAllMovies(): Observable<any> {
     const token = localStorage.getItem('token');
@@ -68,9 +90,11 @@ export class FetchApiDataService {
   }
 
   /**
-   * Get one movie
-   * @param title
-   * @returns Observable of movie data
+   * Sends a GET request to fetch a single movie by its title.
+   * Requires a valid JWT token in the Authorization header.
+   * @param title - The title of the movie to fetch.
+   * @returns An Observable containing the movie object.
+   * @public
    */
   getOneMovie(title: string): Observable<any> {
     const token = localStorage.getItem('token');
@@ -84,9 +108,11 @@ export class FetchApiDataService {
   }
 
   /**
-   * Get director data
-   * @param directorName
-   * @returns Observable of director data
+   * Sends a GET request to fetch director details by name.
+   * Requires a valid JWT token in the Authorization header.
+   * @param directorName - The name of the director to fetch.
+   * @returns An Observable containing the director object.
+   * @public
    */
   getDirector(directorName: string): Observable<any> {
     const token = localStorage.getItem('token');
@@ -100,9 +126,11 @@ export class FetchApiDataService {
   }
 
   /**
-   * Get genre data
-   * @param genreName
-   * @returns Observable of genre data
+   * Sends a GET request to fetch genre details by name.
+   * Requires a valid JWT token in the Authorization header.
+   * @param genreName - The name of the genre to fetch.
+   * @returns An Observable containing the genre object.
+   * @public
    */
   getGenre(genreName: string): Observable<any> {
     const token = localStorage.getItem('token');
@@ -116,9 +144,11 @@ export class FetchApiDataService {
   }
 
   /**
-   * Get user data
-   * Note: We don't actually use this in the profile component now
-   * as we're loading directly from localStorage first
+   * Sends a GET request to fetch the current user's details from the API.
+   * Requires a valid JWT token and uses the username stored in localStorage.
+   * Note: Currently less used as profile often loads from localStorage first.
+   * @returns An Observable containing the user object.
+   * @public
    */
   getUser(): Observable<any> {
     const token = localStorage.getItem('token');
@@ -137,8 +167,10 @@ export class FetchApiDataService {
   }
 
   /**
-   * Get favorite movies for a user
-   * @returns Observable of favorite movies
+   * Sends a GET request to fetch the current user's favorite movie IDs.
+   * Requires a valid JWT token and uses the username stored in localStorage.
+   * @returns An Observable containing an array of favorite movie IDs.
+   * @public
    */
   getFavoriteMovies(): Observable<any> {
     const token = localStorage.getItem('token');
@@ -159,9 +191,11 @@ export class FetchApiDataService {
   }
 
   /**
-   * Add a movie to favorites
-   * @param movieId
-   * @returns Observable of updated user data
+   * Sends a POST request to add a movie to the user's favorites list.
+   * Requires a valid JWT token and uses the username stored in localStorage.
+   * @param movieId - The ID of the movie to add.
+   * @returns An Observable containing the updated user object.
+   * @public
    */
   addFavoriteMovie(movieId: string): Observable<any> {
     const token = localStorage.getItem('token');
@@ -182,9 +216,12 @@ export class FetchApiDataService {
   }
 
   /**
-   * Edit user information - matches pattern in movie-card component
-   * @param userDetails
-   * @returns Observable of updated user data
+   * Sends a PUT request to update the user's profile information.
+   * Requires a valid JWT token and uses the username stored in localStorage.
+   * Only sends fields that have been changed.
+   * @param userDetails - An object containing the user fields to update (e.g., Email, Birthday, Password).
+   * @returns An Observable containing the updated user object.
+   * @public
    */
   editUser(userDetails: any): Observable<any> {
     const token = localStorage.getItem('token');
@@ -205,8 +242,10 @@ export class FetchApiDataService {
   }
 
   /**
-   * Delete user account - matches pattern in movie-card component
-   * @returns Observable of delete status
+   * Sends a DELETE request to delete the user's account.
+   * Requires a valid JWT token and uses the username stored in localStorage.
+   * @returns An Observable containing the API response upon successful deletion.
+   * @public
    */
   deleteUser(): Observable<any> {
     const token = localStorage.getItem('token');
@@ -225,9 +264,11 @@ export class FetchApiDataService {
   }
 
   /**
-   * Remove a movie from favorites
-   * @param movieId
-   * @returns Observable of updated user data
+   * Sends a DELETE request to remove a movie from the user's favorites list.
+   * Requires a valid JWT token and uses the username stored in localStorage.
+   * @param movieId - The ID of the movie to remove.
+   * @returns An Observable containing the updated user object.
+   * @public
    */
   deleteFavoriteMovie(movieId: string): Observable<any> {
     const token = localStorage.getItem('token');
@@ -243,13 +284,25 @@ export class FetchApiDataService {
       .pipe(map(this.extractResponseData), catchError(this.handleError));
   }
 
-  // Non-typed response extraction
+  /**
+   * Extracts the response body from an HTTP response.
+   * @param res - The HTTP response object.
+   * @returns The response body or an empty object.
+   * @private
+   */
   private extractResponseData(res: any): any {
     const body = res;
     return body || {};
   }
 
   // Error handling function
+  /**
+   * Handles HTTP errors that occur during API requests.
+   * Logs detailed error information to the console.
+   * @param error - The HttpErrorResponse object.
+   * @returns An Observable that throws an error with a user-friendly message.
+   * @private
+   */
   private handleError(error: HttpErrorResponse): any {
     console.log('===== HANDLING API ERROR =====');
     console.log('Full error object:', error);

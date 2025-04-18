@@ -29,7 +29,18 @@ import { FetchApiDataService } from '../fetch-api-data.service';
     FormsModule,
   ],
 })
+
+/**
+ * Component responsible for the user registration form.
+ * Presented within a MatDialog. Collects user input and uses FetchApiDataService
+ * to register the user. Provides feedback via MatSnackBar.
+ */
 export class UserRegistrationFormComponent {
+  /**
+   * Input property holding the user registration data, bound to the form fields.
+   * Contains Username, Password, Email, and Birthday.
+   * @Input
+   */
   @Input() userData = { Username: '', Password: '', Email: '', Birthday: '' };
 
   constructor(
@@ -39,8 +50,10 @@ export class UserRegistrationFormComponent {
   ) {}
 
   /**
-   * Registers a new user by sending form data to backend API
-   * @returns void
+   * Called when the registration form is submitted.
+   * Uses FetchApiDataService to send registration data to the backend.
+   * Handles success and error responses, closing the dialog on success
+   * and showing snack bar messages for feedback.
    */
   registerUser(): void {
     this.fetchApiData.userRegistration(this.userData).subscribe({

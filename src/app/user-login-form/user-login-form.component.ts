@@ -26,7 +26,19 @@ import { Router } from '@angular/router';
     FormsModule,
   ],
 })
+
+/**
+ * Component responsible for the user login form.
+ * Presented within a MatDialog. Collects user credentials and uses FetchApiDataService
+ * to authenticate the user. Stores user data and token in localStorage on success,
+ * navigates to the movies page, and provides feedback via MatSnackBar.
+ */
 export class UserLoginFormComponent {
+  /**
+   * Input property holding the user login credentials (Username, Password),
+   * bound to the form fields.
+   * @Input
+   */
   @Input() loginData = { Username: '', Password: '' };
 
   constructor(
@@ -37,8 +49,10 @@ export class UserLoginFormComponent {
   ) {}
 
   /**
-   * Logs in a user by sending credentials to backend API
-   * @returns void
+   * Called when the login form is submitted.
+   * Uses FetchApiDataService to send login credentials to the backend.
+   * Handles success and error responses: stores user/token, closes dialog,
+   * navigates to '/movies' on success, and shows snack bar messages for feedback.
    */
   loginUser(): void {
     this.fetchApiData.userLogin(this.loginData).subscribe({

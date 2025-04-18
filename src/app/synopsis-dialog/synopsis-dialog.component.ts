@@ -15,14 +15,24 @@ import { CommonModule } from '@angular/common';
   templateUrl: './synopsis-dialog.component.html',
   styleUrl: './synopsis-dialog.component.scss',
 })
+
+/**
+ * Component responsible for displaying movie synopsis details within a MatDialog.
+ * Receives movie title and description via MAT_DIALOG_DATA injection.
+ */
 export class SynopsisDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<SynopsisDialogComponent>,
+    /**
+     * Injected data containing the movie title and description to display.
+     * Expected structure: `{ title: string, description: string }`
+     * @Inject MAT_DIALOG_DATA
+     */
     @Inject(MAT_DIALOG_DATA) public data: { title: string; description: string }
   ) {}
 
   /**
-   * Closes the dialog
+   * Closes the dialog window.
    */
   closeDialog(): void {
     this.dialogRef.close();

@@ -15,14 +15,24 @@ import { CommonModule } from '@angular/common';
   templateUrl: './genre-dialog.component.html',
   styleUrl: './genre-dialog.component.scss',
 })
+
+/**
+ * Component responsible for displaying genre details within a MatDialog.
+ * Receives genre data via MAT_DIALOG_DATA injection.
+ */
 export class GenreDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<GenreDialogComponent>,
+    /**
+     * Injected data containing the genre object to display.
+     * Expected structure: `{ genre: { Name: string, Description: string } }`
+     * @Inject MAT_DIALOG_DATA
+     */
     @Inject(MAT_DIALOG_DATA) public data: { genre: any }
   ) {}
 
   /**
-   * Closes the dialog
+   * Closes the dialog window.
    */
   closeDialog(): void {
     this.dialogRef.close();

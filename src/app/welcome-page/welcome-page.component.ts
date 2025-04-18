@@ -13,11 +13,16 @@ import { CommonModule } from '@angular/common';
   templateUrl: './welcome-page.component.html',
   styleUrl: './welcome-page.component.scss',
 })
+
+/**
+ * Component for the application's welcome screen.
+ * Provides buttons for users to open the login or registration dialogs.
+ */
 export class WelcomePageComponent {
   constructor(public dialog: MatDialog) {}
 
   /**
-   * Opens the user registration dialog
+   * Opens the UserRegistrationFormComponent in a dialog window.
    */
   openUserRegistrationDialog(): void {
     this.dialog.open(UserRegistrationFormComponent, {
@@ -26,7 +31,7 @@ export class WelcomePageComponent {
   }
 
   /**
-   * Opens the user login dialog
+   * Opens the UserLoginFormComponent in a dialog window.
    */
   openUserLoginDialog(): void {
     this.dialog.open(UserLoginFormComponent, {

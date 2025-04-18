@@ -26,8 +26,22 @@ import { CommonModule } from '@angular/common';
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
+
+/**
+ * Component for displaying and editing the logged-in user's profile information.
+ * Fetches user data initially from localStorage, allows updating email, birthday,
+ * and password via FetchApiDataService. Also provides options to delete the account
+ * and navigate back to the movie list or log out.
+ */
 export class UserProfileComponent implements OnInit {
+  /**
+   * Holds the complete user object, typically loaded from localStorage or API response.
+   */
   user: any = {};
+  /**
+   * Data model bound to the profile form fields for editing.
+   * Includes Username (read-only), Email, Birthday, Password (optional), and PasswordConfirm.
+   */
   userData = {
     Username: '',
     Email: '',
@@ -36,6 +50,10 @@ export class UserProfileComponent implements OnInit {
     PasswordConfirm: '',
   };
 
+  /**
+   * Flag to indicate when an API request (update/delete) is in progress.
+   * Used to disable form actions and show loading indicators.
+   */
   isLoading = false;
 
   constructor(
@@ -44,6 +62,11 @@ export class UserProfileComponent implements OnInit {
     private router: Router
   ) {}
 
+  /**
+   * Angular lifecycle hook called upon component initialization.
+   * Checks if the user is logged in (redirects to 'welcome' if not).
+   * Calls `loadUserFromLocalStorage` to populate the form.
+   */
   ngOnInit(): void {
     // Redirect if not logged in
     if (!localStorage.getItem('user') || !localStorage.getItem('token')) {
@@ -56,7 +79,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   /**
-   * Load user data from localStorage
+   * Loads user data from localStorage, parses it, and populates the `user`
+   * and `userData` properties. Handles potential parsing errors.
    */
   loadUserFromLocalStorage(): void {
     try {
@@ -81,7 +105,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   /**
-   * Format date string to YYYY-MM-DD for input field
+   * Converts a date string (potentially from API or localStorage) into
+   * 'YYYY-MM-DD' format suitable for the HTML date input field.
+   * @param dateString - The date string to format.
+   * @returns The formatted date string or an empty string if input is invalid.
    */
   formatDate(dateString: string): string {
     if (!dateString) return '';
@@ -90,7 +117,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   /**
-   * Validates the form before submission
+   * Performs basic validation before submitting the profile update.
+   * Checks for required email and matching passwords (if a new password is entered).
+   * Shows snack bar messages for validation errors.
+   * @returns `true` if the form is valid, `false` otherwise.
    */
   validateForm(): boolean {
     if (!this.userData.Email) {
@@ -110,7 +140,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   /**
-   * Updates the user profile
+   * Handles the submission of the profile update form.
+   * Validates the form, prepares an object containing only the changed fields,
+   * calls the `editUser` method of FetchApiDataService.
+   * Updates localStorage and component state on success. Provides feedback via snack bar.
    */
   updateUser(): void {
     if (!this.validateForm()) {
@@ -172,7 +205,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   /**
-   * Deletes the user account
+   * Handles the user account deletion process.
+   * Prompts the user for confirmation. If confirmed, calls the `deleteUser`
+   * method of FetchApiDataService. Clears localStorage and navigates to 'welcome'
+   * on success. Provides feedback via snack bar.
    */
   deleteAccount(): void {
     if (
@@ -202,14 +238,14 @@ export class UserProfileComponent implements OnInit {
   }
 
   /**
-   * Navigates back to movies
+   * Navigates the user to the main movie listing page ('/movies').
    */
   goToMovies(): void {
     this.router.navigate(['movies']);
   }
 
   /**
-   * Logs the user out
+   * Logs the user out by clearing localStorage and navigating to the welcome page ('/welcome').
    */
   logout(): void {
     localStorage.clear();

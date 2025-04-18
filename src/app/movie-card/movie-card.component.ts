@@ -19,8 +19,21 @@ import { Router } from '@angular/router';
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss',
 })
+
+/**
+ * Component responsible for displaying the list of movies.
+ * Fetches movie data and user favorites using FetchApiDataService.
+ * Renders movie cards with details and actions (view genre/director/synopsis, toggle favorite).
+ * Provides navigation to the user profile and logout functionality.
+ */
 export class MovieCardComponent implements OnInit {
+  /**
+   * An array holding the movie data fetched from the API, transformed for display.
+   */
   movies: any[] = [];
+  /**
+   * An array holding the IDs of the user's favorite movies, loaded from localStorage.
+   */
   favorites: any[] = [];
 
   constructor(
@@ -30,6 +43,11 @@ export class MovieCardComponent implements OnInit {
     private router: Router
   ) {}
 
+  /**
+   * Angular lifecycle hook called upon component initialization.
+   * Checks if the user is logged in (redirects to 'welcome' if not).
+   * Calls `getFavorites` to load favorites from localStorage, then calls `getMovies`.
+   */
   ngOnInit(): void {
     // Redirect if not logged in
     if (!localStorage.getItem('user') || !localStorage.getItem('token')) {
@@ -45,7 +63,9 @@ export class MovieCardComponent implements OnInit {
   }
 
   /**
-   * Gets all movies from the API
+   * Fetches the list of all movies from the API using FetchApiDataService.
+   * Transforms the raw API response into the structure expected by the template.
+   * Populates the `movies` array.
    */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
@@ -73,7 +93,8 @@ export class MovieCardComponent implements OnInit {
   }
 
   /**
-   * Gets user's favorite movies
+   * Loads the user's favorite movie IDs from the 'user' object stored in localStorage.
+   * Populates the `favorites` array.
    */
   getFavorites(): void {
     const userObj = JSON.parse(localStorage.getItem('user') || '{}');
@@ -82,17 +103,21 @@ export class MovieCardComponent implements OnInit {
   }
 
   /**
-   * Checks if a movie is in the user's favorites
-   * @param id Movie ID
-   * @returns boolean
+   * Checks if a given movie ID exists in the local `favorites` array.
+   * Used to determine the state of the favorite icon on a movie card.
+   * @param id - The ID of the movie to check.
+   * @returns `true` if the movie is a favorite, `false` otherwise.
    */
   isFavorite(id: string): boolean {
     return this.favorites.includes(id);
   }
 
   /**
-   * Adds or removes a movie from favorites
-   * @param id Movie ID
+   * Adds or removes a movie from the user's favorites.
+   * Calls the appropriate FetchApiDataService method (`addFavoriteMovie` or `deleteFavoriteMovie`).
+   * Updates the local `favorites` array and localStorage upon successful API response.
+   * Provides user feedback via MatSnackBar.
+   * @param id - The ID of the movie to add or remove.
    */
   toggleFavorite(id: string): void {
     if (this.isFavorite(id)) {
@@ -148,8 +173,9 @@ export class MovieCardComponent implements OnInit {
   }
 
   /**
-   * Opens the genre dialog
-   * @param genre Genre object
+   * Opens the GenreDialogComponent in a dialog window to display genre details.
+   * Passes the genre data associated with the selected movie.
+   * @param genre - The genre object (containing Name, Description) to display.
    */
   openGenreDialog(genre: any): void {
     this.dialog.open(GenreDialogComponent, {
@@ -159,8 +185,9 @@ export class MovieCardComponent implements OnInit {
   }
 
   /**
-   * Opens the director dialog
-   * @param director Director object
+   * Opens the DirectorDialogComponent in a dialog window to display director details.
+   * Passes the director data associated with the selected movie.
+   * @param director - The director object (containing Name, Bio, etc.) to display.
    */
   openDirectorDialog(director: any): void {
     this.dialog.open(DirectorDialogComponent, {
@@ -170,9 +197,10 @@ export class MovieCardComponent implements OnInit {
   }
 
   /**
-   * Opens the synopsis dialog
-   * @param title Movie title
-   * @param description Movie description
+   * Opens the SynopsisDialogComponent in a dialog window to display the movie's synopsis.
+   * Passes the movie title and description.
+   * @param title - The title of the movie.
+   * @param description - The synopsis/description of the movie.
    */
   openSynopsisDialog(title: string, description: string): void {
     this.dialog.open(SynopsisDialogComponent, {
@@ -182,14 +210,14 @@ export class MovieCardComponent implements OnInit {
   }
 
   /**
-   * Navigates to user profile
+   * Navigates the user to their profile page ('/profile').
    */
   goToProfile(): void {
     this.router.navigate(['profile']);
   }
 
   /**
-   * Logs the user out
+   * Logs the user out by clearing localStorage and navigating to the welcome page ('/welcome').
    */
   logout(): void {
     localStorage.clear();

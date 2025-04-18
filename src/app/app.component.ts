@@ -14,13 +14,22 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
+
+/**
+ * The root component of the J-Flix Angular application.
+ * Primarily responsible for setting up the main router outlet.
+ * Contains methods (though currently unused directly in the template) for opening login/registration dialogs.
+ */
 export class AppComponent {
   title = 'J-Flix-Angular-client';
 
   constructor(public dialog: MatDialog) {}
 
   /**
-   * Opens the user registration dialog
+   * Opens the user registration dialog using MatDialog.
+   * This method might be intended for use elsewhere or is legacy.
+   * The welcome page component now handles opening this dialog.
+   * @deprecated Use method in WelcomePageComponent instead.
    */
   openUserRegistrationDialog(): void {
     this.dialog.open(UserRegistrationFormComponent, {
@@ -29,7 +38,10 @@ export class AppComponent {
   }
 
   /**
-   * Opens the user login dialog
+   * Opens the user login dialog using MatDialog.
+   * This method might be intended for use elsewhere or is legacy.
+   * The welcome page component now handles opening this dialog.
+   * @deprecated Use method in WelcomePageComponent instead.
    */
   openUserLoginDialog(): void {
     this.dialog.open(UserLoginFormComponent, {
