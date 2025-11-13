@@ -1,12 +1,52 @@
 <!-- src/app/welcome-page/welcome-page.component.html -->
 <div class="welcome-container">
-    <h1>Welcome to J-Flix!</h1>
-    <div class="button-container">
-        <button mat-raised-button color="primary" (click)="openUserRegistrationDialog()">
-            Sign Up
-        </button>
-        <button mat-raised-button color="primary" (click)="openUserLoginDialog()">
-            Login
-        </button>
+  <div class="hero-content">
+    <div class="badge" @fadeIn>
+      <span class="badge-text">Your Movie Collection</span>
     </div>
+
+    <h1 class="hero-title" @slideUp>
+      Welcome to<br>
+      <span class="gradient-text">J-Flix</span>
+    </h1>
+
+    <p class="hero-subtitle" @slideUp>
+      Discover, organize, and enjoy your favorite movies.<br>
+      Your personal cinema experience starts here.
+    </p>
+
+    <div class="button-container" @slideUp>
+      <button
+        mat-flat-button
+        color="primary"
+        class="cta-button primary"
+        (click)="openUserRegistrationDialog()"
+        aria-label="Sign up for J-Flix">
+        Get Started
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        class="cta-button secondary"
+        (click)="openUserLoginDialog()"
+        aria-label="Log in to J-Flix">
+        Sign In
+      </button>
+    </div>
+
+    <div class="features" @fadeIn>
+      <div class="feature">
+        <span class="feature-icon">🎬</span>
+        <span class="feature-text">Browse Movies</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">⭐</span>
+        <span class="feature-text">Save Favorites</span>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🎯</span>
+        <span class="feature-text">Get Details</span>
+      </div>
+    </div>
+  </div>
 </div>

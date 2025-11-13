@@ -1,108 +1,346 @@
 /* src/app/movie-card/movie-card.component.scss */
+
+/* ===========================
+   PAGE LAYOUT
+   =========================== */
+
 .movie-page {
-    padding: 20px;
+  padding: var(--space-2xl) var(--space-xl);
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: var(--space-lg) var(--space-md);
+  }
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+/* ===========================
+   PAGE HEADER
+   =========================== */
 
-    @media (max-width: 600px) {
-        flex-direction: column;
-        gap: 10px;
-    }
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 2px solid rgba(63, 81, 181, 0.1);
 
-    h1 {
-        margin: 0;
-    }
-
-    .navigation-buttons {
-        display: flex;
-        gap: 10px;
-    }
-}
-
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-
-    @media (max-width: 600px) {
-        grid-template-columns: 1fr;
-    }
-}
-
-.movie-card {
-    height: 100%;
-    display: flex;
+  @media (max-width: 768px) {
     flex-direction: column;
-    transition: transform 0.3s ease;
-    // cursor: pointer; // <--- REMOVE this line
-
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
+    align-items: flex-start;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+  }
 }
 
-.movie-card-header {
-    height: 85px; // Keep slightly increased height
-    padding: 16px; // Keep padding
-    box-sizing: border-box; // Keep box-sizing
-    display: flex; // Use Flexbox again
-    flex-direction: column; // Stack items vertically
-    justify-content: flex-start; // Align items to the top of the container
+.header-content {
+  .page-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    margin: 0 0 var(--space-xs) 0;
+    color: #1a237e;
+    letter-spacing: -0.02em;
+  }
 
-    // Target the title for clamping
-    mat-card-title {
-        order: 1; // Ensure title comes first in flow
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2; // Limit to 3 lines
-        -webkit-box-orient: vertical;
-        white-space: normal; // Allow wrapping
-        line-height: 1.2em; // Explicit line-height helps calculation
-        // max-height: calc(1.2em * 3); // REMOVE explicit max-height, rely on line-clamp
-        margin-bottom: 2px; // Small space below title
-    }
-
-    // Target the subtitle
-    mat-card-subtitle {
-        order: 2; // Ensure subtitle comes after title in flow
-        line-height: 1.2em;
-        margin-top: 0; // Ensure no negative margin
-        display: block; // Ensure block behavior
-        overflow: hidden; // Hide overflow just in case
-        text-overflow: ellipsis; // Add ellipsis if subtitle itself is too long
-        white-space: nowrap; // Prevent subtitle wrapping
-        flex-shrink: 0; // Prevent subtitle from shrinking if space is tight
-    }
+  .page-subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
 }
 
-.movie-image {
-    object-fit: cover;
+.navigation-buttons {
+  display: flex;
+  gap: var(--space-md);
+
+  @media (max-width: 768px) {
     width: 100%;
-    height: auto;
-    display: block;
-    margin-top: 0;
-    cursor: pointer;
-}
-
-.movie-director {
-    margin-top: 8px;
-    font-style: italic;
-}
-
-.movie-card-actions {
-    margin-top: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
 
     button {
-        margin: 5px;
+      flex: 1;
     }
+  }
+}
+
+/* ===========================
+   MOVIE GRID
+   =========================== */
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-2xl);
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================
+   MOVIE CARDS
+   =========================== */
+
+.movie-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden;
+  transition: all var(--transition-base) !important;
+  background: white;
+  box-shadow: var(--shadow-md) !important;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl) !important;
+  }
+
+  &:focus-within {
+    outline: 3px solid #3f51b5;
+    outline-offset: 2px;
+  }
+}
+
+/* ===========================
+   IMAGE CONTAINER WITH OVERLAY
+   =========================== */
+
+.movie-card-image-container {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 2/3;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  .movie-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow) !important;
+  }
+
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: var(--space-lg);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .view-details-text {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transform: translateY(10px);
+    transition: transform var(--transition-base);
+  }
+
+  &:hover {
+    .movie-image {
+      transform: scale(1.05);
+    }
+
+    .image-overlay {
+      opacity: 1;
+    }
+
+    .view-details-text {
+      transform: translateY(0);
+    }
+  }
+
+  &:focus-visible {
+    outline: 3px solid #3f51b5;
+    outline-offset: -3px;
+  }
+}
+
+/* ===========================
+   CARD HEADER
+   =========================== */
+
+.movie-card-header {
+  padding: var(--space-lg) !important;
+  background: white;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  ::ng-deep {
+    .mat-mdc-card-title {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: var(--space-xs);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      color: #1a237e;
+    }
+
+    .mat-mdc-card-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
+      margin-top: 0;
+    }
+  }
+}
+
+/* ===========================
+   CARD CONTENT
+   =========================== */
+
+.movie-card-content {
+  padding: 0 var(--space-lg) var(--space-md) !important;
+  flex-grow: 1;
+
+  p {
+    margin: var(--space-xs) 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .movie-director,
+  .movie-genre {
+    display: flex;
+    gap: var(--space-xs);
+    align-items: baseline;
+  }
+
+  .director-label,
+  .genre-label {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 13px;
+  }
+
+  .director-name,
+  .genre-name {
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: 400;
+  }
+}
+
+/* ===========================
+   CARD ACTIONS
+   =========================== */
+
+.movie-card-actions {
+  padding: var(--space-md) var(--space-lg) !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+
+  button {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+    border-radius: var(--radius-sm) !important;
+
+    &:not(.favorite-button) {
+      padding: var(--space-xs) var(--space-md) !important;
+    }
+  }
+
+  .favorite-button {
+    margin-left: auto;
+    transition: all var(--transition-fast) !important;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+
+    mat-icon {
+      transition: all var(--transition-fast);
+    }
+
+    &[color='accent'] mat-icon {
+      animation: heartBeat 0.3s ease-in-out;
+    }
+  }
+}
+
+/* ===========================
+   ANIMATIONS
+   =========================== */
+
+@keyframes heartBeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+// Stagger animation for grid items (CSS approach)
+.movie-card {
+  animation: fadeInUp var(--transition-base) ease-out backwards;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   REDUCED MOTION SUPPORT
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .movie-card {
+    animation: none;
+  }
+
+  .movie-card-image-container .movie-image,
+  .movie-card-image-container .image-overlay,
+  .movie-card-image-container .view-details-text,
+  .favorite-button,
+  .favorite-button mat-icon {
+    transition: none !important;
+    animation: none !important;
+  }
 }

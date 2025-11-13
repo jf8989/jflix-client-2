@@ -5,6 +5,7 @@ import { UserLoginFormComponent } from '../user-login-form/user-login-form.compo
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { fadeInAnimation, slideUpAnimation } from '../animations';
 
 @Component({
   selector: 'app-welcome-page',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, MatButtonModule],
   templateUrl: './welcome-page.component.html',
   styleUrl: './welcome-page.component.scss',
+  animations: [fadeInAnimation, slideUpAnimation],
 })
 
 /**

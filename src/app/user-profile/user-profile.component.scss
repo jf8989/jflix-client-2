@@ -1,63 +1,283 @@
 /* src/app/user-profile/user-profile.component.scss */
+
+/* ===========================
+   PAGE LAYOUT
+   =========================== */
+
 .profile-container {
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
+  padding: var(--space-2xl) var(--space-xl);
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh;
+  animation: fadeIn var(--transition-base) ease-out;
+
+  @media (max-width: 768px) {
+    padding: var(--space-lg) var(--space-md);
+  }
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-
-    @media (max-width: 600px) {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    h1 {
-        margin: 0;
-    }
-
-    .navigation-buttons {
-        display: flex;
-        gap: 10px;
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
+
+/* ===========================
+   PAGE HEADER
+   =========================== */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 2px solid rgba(63, 81, 181, 0.1);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+  }
+}
+
+.header-content {
+  .page-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    margin: 0 0 var(--space-xs) 0;
+    color: #1a237e;
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: var(--space-md);
+
+  @media (max-width: 768px) {
+    width: 100%;
+
+    button {
+      flex: 1;
+    }
+  }
+}
+
+/* ===========================
+   PROFILE CARD
+   =========================== */
 
 .profile-card {
-    width: 100%;
+  width: 100%;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  overflow: hidden;
+  animation: slideUp var(--transition-base) ease-out;
 }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: var(--space-2xl) !important;
+
+  ::ng-deep {
+    .mat-mdc-card-title {
+      color: white;
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 800;
+      margin: 0 0 var(--space-xs) 0;
+      letter-spacing: -0.01em;
+    }
+
+    .mat-mdc-card-subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+}
+
+.card-content {
+  padding: var(--space-2xl) !important;
+
+  @media (max-width: 600px) {
+    padding: var(--space-lg) !important;
+  }
+}
+
+/* ===========================
+   FORM SECTIONS
+   =========================== */
 
 .profile-form {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    gap: 16px; // Added gap for better spacing between form fields
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
 }
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a237e;
+  margin: 0 0 var(--space-md) 0;
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid rgba(63, 81, 181, 0.15);
+  letter-spacing: -0.01em;
+}
+
+.form-field {
+  width: 100%;
+  animation: fadeInUp 400ms ease-out backwards;
+
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i + 1}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   LOADING SPINNER
+   =========================== */
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  gap: var(--space-lg);
+
+  .loading-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+}
+
+/* ===========================
+   PROFILE ACTIONS
+   =========================== */
 
 .profile-actions {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px; // Added padding for better spacing
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-xl) var(--space-2xl) !important;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 
-    @media (max-width: 400px) {
-        flex-direction: column;
-        gap: 10px;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    padding: var(--space-lg) !important;
+  }
+
+  button {
+    flex: 1;
+    height: 48px;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: var(--radius-md) !important;
+    transition: all var(--transition-fast) !important;
+
+    mat-icon {
+      margin-right: var(--space-sm);
     }
+
+    &:hover:not([disabled]) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md) !important;
+    }
+
+    &:active:not([disabled]) {
+      transform: translateY(0);
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .save-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+
+    &:hover:not([disabled]) {
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+    }
+  }
+
+  .delete-button {
+    &:hover:not([disabled]) {
+      background: rgba(244, 67, 54, 0.04) !important;
+    }
+  }
 }
 
-// Added styles for loading spinner
-.loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
+/* ===========================
+   ACCESSIBILITY
+   =========================== */
+
+button:focus-visible {
+  outline: 3px solid #3f51b5 !important;
+  outline-offset: 3px;
 }
 
-// Added styles for form fields to ensure proper spacing
-mat-form-field {
-    width: 100%;
-    margin-bottom: 8px;
+input:focus-visible {
+  outline: 3px solid #3f51b5 !important;
+  outline-offset: 2px;
+}
+
+/* ===========================
+   REDUCED MOTION SUPPORT
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-container,
+  .profile-card,
+  .form-field,
+  button {
+    animation: none !important;
+    transition: none !important;
+  }
 }

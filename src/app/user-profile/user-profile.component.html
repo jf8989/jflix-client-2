@@ -1,63 +1,138 @@
 <!-- src/app/user-profile/user-profile.component.html -->
 <div class="profile-container">
-    <div class="header">
-        <h1>User Profile</h1>
-        <div class="navigation-buttons">
-            <button mat-raised-button color="primary" (click)="goToMovies()">Movies</button>
-            <button mat-raised-button color="warn" (click)="logout()">Logout</button>
-        </div>
+  <header class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Your Profile</h1>
+      <p class="page-subtitle">Manage your account settings</p>
     </div>
+    <nav class="navigation-buttons" aria-label="User navigation">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="goToMovies()"
+        aria-label="Go to movies page">
+        Movies
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="logout()"
+        aria-label="Log out of application">
+        Logout
+      </button>
+    </nav>
+  </header>
 
-    <mat-card class="profile-card">
-        <mat-card-header>
-            <mat-card-title>Edit Profile</mat-card-title>
-        </mat-card-header>
+  <mat-card class="profile-card">
+    <mat-card-header class="card-header">
+      <mat-card-title class="card-title">Edit Profile</mat-card-title>
+      <mat-card-subtitle class="card-subtitle">
+        Update your personal information
+      </mat-card-subtitle>
+    </mat-card-header>
 
-        <mat-card-content>
-            <div *ngIf="isLoading" class="loading-spinner">
-                <mat-spinner diameter="40"></mat-spinner>
-            </div>
+    <mat-card-content class="card-content">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p class="loading-text">Loading your profile...</p>
+      </div>
 
-            <form class="profile-form" *ngIf="!isLoading">
-                <mat-form-field appearance="outline">
-                    <mat-label>Username</mat-label>
-                    <input matInput [(ngModel)]="userData.Username" name="Username" placeholder="Username" readonly />
-                    <mat-hint>Username cannot be changed</mat-hint>
-                </mat-form-field>
+      <form class="profile-form" *ngIf="!isLoading">
+        <div class="form-section">
+          <h3 class="section-title">Account Information</h3>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput [(ngModel)]="userData.Email" name="Email" type="email" placeholder="Email" required />
-                    <mat-error>Please enter a valid email address</mat-error>
-                </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Username</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Username"
+              name="Username"
+              placeholder="Username"
+              readonly
+              aria-label="Username (read-only)" />
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-hint>Username cannot be changed</mat-hint>
+          </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Birthday</mat-label>
-                    <input matInput [(ngModel)]="userData.Birthday" name="Birthday" type="date"
-                        placeholder="Birthday" />
-                </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Email"
+              name="Email"
+              type="email"
+              placeholder="your.email@example.com"
+              required
+              aria-label="Email address" />
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error>Please enter a valid email address</mat-error>
+          </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>New Password (Optional)</mat-label>
-                    <input matInput [(ngModel)]="userData.Password" name="Password" type="password"
-                        placeholder="Leave blank to keep current password" />
-                </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Birthday</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Birthday"
+              name="Birthday"
+              type="date"
+              placeholder="Birthday"
+              aria-label="Birthday" />
+            <mat-icon matPrefix>cake</mat-icon>
+          </mat-form-field>
+        </div>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Confirm New Password</mat-label>
-                    <input matInput [(ngModel)]="userData.PasswordConfirm" name="PasswordConfirm" type="password"
-                        placeholder="Confirm new password" [disabled]="!userData.Password" />
-                </mat-form-field>
-            </form>
-        </mat-card-content>
+        <div class="form-section">
+          <h3 class="section-title">Change Password</h3>
 
-        <mat-card-actions class="profile-actions">
-            <button mat-raised-button color="primary" (click)="updateUser()" [disabled]="isLoading">
-                Save Changes
-            </button>
-            <button mat-raised-button color="warn" (click)="deleteAccount()" [disabled]="isLoading">
-                Delete Account
-            </button>
-        </mat-card-actions>
-    </mat-card>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>New Password (Optional)</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Password"
+              name="Password"
+              type="password"
+              placeholder="Leave blank to keep current password"
+              aria-label="New password" />
+            <mat-icon matPrefix>lock</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Confirm New Password</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.PasswordConfirm"
+              name="PasswordConfirm"
+              type="password"
+              placeholder="Confirm new password"
+              [disabled]="!userData.Password"
+              aria-label="Confirm new password" />
+            <mat-icon matPrefix>lock_clock</mat-icon>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="profile-actions">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="updateUser()"
+        [disabled]="isLoading"
+        class="save-button"
+        aria-label="Save profile changes">
+        <mat-icon>save</mat-icon>
+        Save Changes
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="deleteAccount()"
+        [disabled]="isLoading"
+        class="delete-button"
+        aria-label="Delete account permanently">
+        <mat-icon>delete_forever</mat-icon>
+        Delete Account
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

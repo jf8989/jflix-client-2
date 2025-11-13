@@ -27,6 +27,7 @@ import { FetchApiDataService } from '../fetch-api-data.service'; // For favorite
   ],
   templateUrl: './movie-view-dialog.component.html',
   styleUrls: ['./movie-view-dialog.component.scss'], // Corrected styleUrl
+  animations: [],
 })
 
 /**

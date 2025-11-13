@@ -26,6 +26,7 @@ import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog
   ],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss',
+  animations: [],
 })
 
 /**
