@@ -1,28 +1,74 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>Sign Up!</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <form>
-            <mat-form-field>
-                <input matInput [(ngModel)]="userData.Username" placeholder="Username" type="text" name="Username"
-                    required>
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput [(ngModel)]="userData.Password" type="password" placeholder="Password" name="Password"
-                    required>
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput [(ngModel)]="userData.Email" type="email" placeholder="Email" name="Email" required>
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput [(ngModel)]="userData.Birthday" type="date" placeholder="Birthday" name="Birthday">
-            </mat-form-field>
-        </form>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-raised-button (click)="registerUser()" color="primary">
-            Sign Up
-        </button>
-    </mat-card-actions>
-</mat-card>
+<!-- src/app/user-registration-form/user-registration-form.component.html -->
+<div class="auth-dialog">
+  <div class="dialog-header">
+    <div class="header-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+      </svg>
+    </div>
+    <h2 class="dialog-title">Join J-Flix</h2>
+    <p class="dialog-subtitle">Create your account</p>
+  </div>
+
+  <form class="auth-form">
+    <mat-form-field appearance="outline" class="auth-field">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        [(ngModel)]="userData.Username"
+        type="text"
+        name="Username"
+        required
+        autocomplete="username"
+        aria-label="Username" />
+      <mat-icon matPrefix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="auth-field">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        [(ngModel)]="userData.Email"
+        type="email"
+        name="Email"
+        required
+        autocomplete="email"
+        aria-label="Email address" />
+      <mat-icon matPrefix>email</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="auth-field">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [(ngModel)]="userData.Password"
+        type="password"
+        name="Password"
+        required
+        autocomplete="new-password"
+        aria-label="Password" />
+      <mat-icon matPrefix>lock</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="auth-field">
+      <mat-label>Birthday (Optional)</mat-label>
+      <input
+        matInput
+        [(ngModel)]="userData.Birthday"
+        type="date"
+        name="Birthday"
+        autocomplete="bday"
+        aria-label="Birthday" />
+      <mat-icon matPrefix>cake</mat-icon>
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      class="auth-submit-button"
+      (click)="registerUser()"
+      aria-label="Create account">
+      <span>Create Account</span>
+      <mat-icon>star</mat-icon>
+    </button>
+  </form>
+</div>

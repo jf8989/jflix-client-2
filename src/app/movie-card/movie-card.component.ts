@@ -9,7 +9,10 @@ import { SynopsisDialogComponent } from '../synopsis-dialog/synopsis-dialog.comp
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog.component';
@@ -19,9 +22,12 @@ import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatTooltipModule,
   ],
   templateUrl: './movie-card.component.html',
@@ -41,6 +47,14 @@ export class MovieCardComponent implements OnInit {
    * An array holding the movie data fetched from the API, transformed for display.
    */
   movies: any[] = [];
+  /**
+   * Filtered movies based on search term
+   */
+  filteredMovies: any[] = [];
+  /**
+   * Search term for filtering movies
+   */
+  searchTerm: string = '';
   /**
    * An array holding the IDs of the user's favorite movies, loaded from localStorage.
    */
@@ -98,8 +112,30 @@ export class MovieCardComponent implements OnInit {
             : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
       }));
 
+      // Initialize filtered movies with all movies
+      this.filteredMovies = [...this.movies];
+
       console.log('Transformed movies:', this.movies);
     });
+  }
+
+  /**
+   * Filters movies based on search term
+   * Searches in title, director name, and genre
+   */
+  filterMovies(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      this.filteredMovies = [...this.movies];
+      return;
+    }
+
+    this.filteredMovies = this.movies.filter(movie =>
+      movie.Title?.toLowerCase().includes(term) ||
+      movie.Director?.Name?.toLowerCase().includes(term) ||
+      movie.Genre?.Name?.toLowerCase().includes(term)
+    );
   }
 
   /**
@@ -244,6 +280,13 @@ export class MovieCardComponent implements OnInit {
       console.log('Dialog closed, checking favorites again from localStorage');
       this.getFavorites(); // Re-fetch favorites from localStorage to update icons
     });
+  }
+
+  /**
+   * Navigates the user to their favorites page ('/favorites').
+   */
+  goToFavorites(): void {
+    this.router.navigate(['favorites']);
   }
 
   /**
