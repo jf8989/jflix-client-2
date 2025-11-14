@@ -287,6 +287,26 @@ mat-form-field {
 .mat-mdc-dialog-container {
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--shadow-xl) !important;
+
+  // Cinematic auth dialogs - override default white background
+  .auth-dialog {
+    // Material dialog adds a container, ensure it doesn't show white corners
+    .mdc-dialog__surface {
+      background: transparent !important;
+    }
+  }
+}
+
+// Override dialog container for auth dialogs specifically
+.cdk-overlay-pane:has(.auth-dialog) {
+  .mat-mdc-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mdc-dialog__surface {
+    background: transparent !important;
+  }
 }
 
 // Icon buttons with hover effects
