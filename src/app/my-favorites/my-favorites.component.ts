@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,6 +30,7 @@ import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog
     MatFormFieldModule,
     MatInputModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './my-favorites.component.html',
   styleUrl: './my-favorites.component.scss',
@@ -60,6 +62,10 @@ export class MyFavoritesComponent implements OnInit {
    * Array of favorite movie IDs from localStorage
    */
   favorites: any[] = [];
+  /**
+   * Loading state for fetching movies
+   */
+  isLoading: boolean = true;
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -90,26 +96,37 @@ export class MyFavoritesComponent implements OnInit {
    * Fetches all movies from the API and filters to show only favorites.
    */
   getMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      // Transform the API response
-      this.movies = resp.map((movie: any) => ({
-        _id: movie._id,
-        Title: movie.title,
-        Year: movie.releaseYear,
-        ImagePath: movie.imageURL,
-        Description: movie.description,
-        Director: {
-          Name: movie.director?.name || '',
-          Bio: movie.director?.bio || '',
-        },
-        Genre:
-          Array.isArray(movie.genres) && movie.genres.length > 0
-            ? { Name: movie.genres[0].name, Description: '' }
-            : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
-      }));
+    this.isLoading = true;
+    this.fetchApiData.getAllMovies().subscribe({
+      next: (resp: any) => {
+        // Transform the API response
+        this.movies = resp.map((movie: any) => ({
+          _id: movie._id,
+          Title: movie.title,
+          Year: movie.releaseYear,
+          ImagePath: movie.imageURL,
+          Description: movie.description,
+          Director: {
+            Name: movie.director?.name || '',
+            Bio: movie.director?.bio || '',
+          },
+          Genre:
+            Array.isArray(movie.genres) && movie.genres.length > 0
+              ? { Name: movie.genres[0].name, Description: '' }
+              : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
+        }));
 
-      // Filter to show only favorites
-      this.updateFavoriteMovies();
+        // Filter to show only favorites
+        this.updateFavoriteMovies();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching movies:', err);
+        this.isLoading = false;
+        this.snackBar.open('Failed to load movies', 'OK', {
+          duration: 3000,
+        });
+      },
     });
   }
 

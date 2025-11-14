@@ -1,13 +1,19 @@
 /* Cinematic Auth Dialog */
 .auth-dialog {
   background: linear-gradient(180deg, #1a1a2e 0%, #0a0a0a 100%);
-  padding: var(--space-3xl);
-  min-width: 400px;
+  padding: var(--space-4xl);
+  min-width: 550px;
+  max-width: 600px;
   border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 215, 0, 0.2);
 
+  @media (max-width: 768px) {
+    min-width: 450px;
+    padding: var(--space-3xl);
+  }
+
   @media (max-width: 500px) {
-    min-width: 280px;
+    min-width: 320px;
     padding: var(--space-2xl);
   }
 }
@@ -100,13 +106,29 @@
       color: #ffd700;
     }
 
-    input {
-      color: #fff;
+    input,
+    .mdc-text-field__input {
+      color: #ffffff !important;
       caret-color: #ffd700;
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.5) !important;
     }
 
     .mat-icon {
       color: rgba(255, 215, 0, 0.7);
+    }
+
+    // Ensure autofill text is visible
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+      -webkit-text-fill-color: #ffffff !important;
+      -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.05) inset !important;
+      box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.05) inset !important;
     }
   }
 }

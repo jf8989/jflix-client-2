@@ -2,11 +2,23 @@
 <div class="favorites-page">
   <header class="page-header">
     <div class="header-content">
-      <h1 class="page-title">
-        <mat-icon class="title-icon">favorite</mat-icon>
-        My Favorites
-      </h1>
-      <p class="page-subtitle">Your personal collection of {{ favoriteMovies.length }} {{ favoriteMovies.length === 1 ? 'movie' : 'movies' }}</p>
+      <div class="header-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18,9V7h-2.5L17,4.5L15.5,3L14,4.5V7H10V4.5L8.5,3L7,4.5V7H4.5L3,8.5L4.5,10H7v4H4.5L3,15.5L4.5,17H7v2.5L8.5,21L10,19.5V17h4v2.5L15.5,21L17,19.5V17h2v-2h-2.5L18,13.5L16.5,12H14v-2h4Zm-4,6v-4h-4v4h4Z"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="letter">J</span><span class="letter">-</span><span class="letter">F</span><span class="letter">L</span><span class="letter">I</span><span class="letter">X</span>
+        </div>
+      </div>
+      <div class="header-title-section">
+        <h1 class="page-title">
+          <mat-icon class="title-icon">favorite</mat-icon>
+          My Favorites
+        </h1>
+        <p class="page-subtitle">Your personal collection of {{ favoriteMovies.length }} {{ favoriteMovies.length === 1 ? 'movie' : 'movies' }}</p>
+      </div>
     </div>
     <nav class="navigation-buttons" aria-label="User navigation">
       <button
@@ -34,8 +46,14 @@
     </nav>
   </header>
 
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="60" color="accent"></mat-spinner>
+    <p class="loading-text">Loading your favorites...</p>
+  </div>
+
   <!-- Empty State -->
-  <div class="empty-state" *ngIf="favoriteMovies.length === 0">
+  <div class="empty-state" *ngIf="!isLoading && favoriteMovies.length === 0">
     <div class="empty-state-icon">
       <mat-icon>favorite_border</mat-icon>
     </div>
@@ -54,7 +72,7 @@
   </div>
 
   <!-- Search and Grid (only show if there are favorites) -->
-  <ng-container *ngIf="favoriteMovies.length > 0">
+  <ng-container *ngIf="!isLoading && favoriteMovies.length > 0">
     <!-- Search Bar -->
     <div class="search-container">
       <mat-form-field appearance="outline" class="search-field">
