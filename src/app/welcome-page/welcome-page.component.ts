@@ -28,7 +28,8 @@ export class WelcomePageComponent {
    */
   openUserRegistrationDialog(): void {
     this.dialog.open(UserRegistrationFormComponent, {
-      width: '280px',
+      width: 'auto',
+      maxWidth: '90vw',
     });
   }
 
@@ -37,7 +38,8 @@ export class WelcomePageComponent {
    */
   openUserLoginDialog(): void {
     this.dialog.open(UserLoginFormComponent, {
-      width: '280px',
+      width: 'auto',
+      maxWidth: '90vw',
     });
   }
 }
