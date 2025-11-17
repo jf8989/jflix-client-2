@@ -1,10 +1,10 @@
-/* src/app/movie-card/movie-card.component.scss */
+/* src/app/my-favorites/my-favorites.component.scss */
 
 /* ===========================
    PAGE LAYOUT
    =========================== */
 
-.movie-page {
+.favorites-page {
   padding: var(--space-2xl) var(--space-xl);
   max-width: 1600px;
   margin: 0 auto;
@@ -99,6 +99,18 @@
     color: #ffd700;
     letter-spacing: -0.02em;
     text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    .title-icon {
+      font-size: clamp(24px, 3vw, 32px);
+      width: auto;
+      height: auto;
+      color: #ffd700;
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+      animation: heartBeat 2s ease-in-out infinite;
+    }
   }
 
   .page-subtitle {
@@ -145,8 +157,8 @@
     transition: all var(--transition-base) !important;
     border: 2px solid transparent;
 
-    // Primary golden button style (My Favorites)
-    &[color='accent'] {
+    // Primary golden button style (All Movies)
+    &[color='primary'] {
       background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%) !important;
       color: #1a1a2e !important;
       box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3) !important;
@@ -154,19 +166,6 @@
       &:hover:not([disabled]) {
         transform: translateY(-2px);
         box-shadow: 0 6px 30px rgba(255, 215, 0, 0.5) !important;
-      }
-    }
-
-    // Secondary outline button style (Profile)
-    &[color='primary'] {
-      background: transparent !important;
-      color: #ffd700 !important;
-      border-color: rgba(255, 215, 0, 0.5) !important;
-
-      &:hover:not([disabled]) {
-        background: rgba(255, 215, 0, 0.1) !important;
-        border-color: #ffd700 !important;
-        transform: translateY(-2px);
       }
     }
 
@@ -235,6 +234,60 @@
 
     circle {
       stroke: #ffd700;
+    }
+  }
+}
+
+/* ===========================
+   EMPTY STATE
+   =========================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-4xl) var(--space-2xl);
+  min-height: 400px;
+  animation: fadeIn 0.6s ease-out;
+
+  .empty-state-icon {
+    width: 120px;
+    height: 120px;
+    margin-bottom: var(--space-2xl);
+    color: rgba(255, 215, 0, 0.2);
+
+    mat-icon {
+      font-size: 120px;
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .empty-state-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    margin: 0 0 var(--space-md) 0;
+  }
+
+  .empty-state-message {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 var(--space-2xl) 0;
+    max-width: 500px;
+  }
+
+  .empty-state-button {
+    padding: var(--space-md) var(--space-2xl) !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: var(--radius-md) !important;
+
+    mat-icon {
+      margin-right: var(--space-xs);
     }
   }
 }
@@ -385,7 +438,7 @@
   }
 
   &:focus-within {
-    outline: 3px solid #3f51b5;
+    outline: 3px solid #f44336;
     outline-offset: 2px;
   }
 }
@@ -399,7 +452,7 @@
   overflow: hidden;
   cursor: pointer;
   aspect-ratio: 2/3;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
 
   .movie-image {
     width: 100%;
@@ -451,7 +504,7 @@
   }
 
   &:focus-visible {
-    outline: 3px solid #3f51b5;
+    outline: 3px solid #f44336;
     outline-offset: -3px;
   }
 }
@@ -479,7 +532,7 @@
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      color: #1a237e;
+      color: #c62828;
     }
 
     .mat-mdc-card-subtitle {
@@ -560,9 +613,6 @@
 
     mat-icon {
       transition: all var(--transition-fast);
-    }
-
-    &[color='accent'] mat-icon {
       animation: heartBeat 0.3s ease-in-out;
     }
   }
@@ -585,7 +635,16 @@
   }
 }
 
-// Stagger animation for grid items (CSS approach)
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Stagger animation for grid items
 .movie-card {
   animation: fadeInUp var(--transition-base) ease-out backwards;
 
@@ -620,7 +679,8 @@
   .movie-card-image-container .image-overlay,
   .movie-card-image-container .view-details-text,
   .favorite-button,
-  .favorite-button mat-icon {
+  .favorite-button mat-icon,
+  .title-icon {
     transition: none !important;
     animation: none !important;
   }

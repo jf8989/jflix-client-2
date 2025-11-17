@@ -1,0 +1,173 @@
+<!-- src/app/my-favorites/my-favorites.component.html -->
+<div class="favorites-page">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18,9V7h-2.5L17,4.5L15.5,3L14,4.5V7H10V4.5L8.5,3L7,4.5V7H4.5L3,8.5L4.5,10H7v4H4.5L3,15.5L4.5,17H7v2.5L8.5,21L10,19.5V17h4v2.5L15.5,21L17,19.5V17h2v-2h-2.5L18,13.5L16.5,12H14v-2h4Zm-4,6v-4h-4v4h4Z"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="letter">J</span><span class="letter">-</span><span class="letter">F</span><span class="letter">L</span><span class="letter">I</span><span class="letter">X</span>
+        </div>
+      </div>
+      <div class="header-title-section">
+        <h1 class="page-title">
+          <mat-icon class="title-icon">favorite</mat-icon>
+          My Favorites
+        </h1>
+        <p class="page-subtitle">Your personal collection of {{ favoriteMovies.length }} {{ favoriteMovies.length === 1 ? 'movie' : 'movies' }}</p>
+      </div>
+    </div>
+    <nav class="navigation-buttons" aria-label="User navigation">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="goToMovies()"
+        aria-label="Back to all movies">
+        <mat-icon>arrow_back</mat-icon>
+        All Movies
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="goToProfile()"
+        aria-label="Go to profile page">
+        Profile
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="logout()"
+        aria-label="Log out of application">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="60" color="accent"></mat-spinner>
+    <p class="loading-text">Loading your favorites...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && favoriteMovies.length === 0">
+    <div class="empty-state-icon">
+      <mat-icon>favorite_border</mat-icon>
+    </div>
+    <h2 class="empty-state-title">No favorites yet</h2>
+    <p class="empty-state-message">
+      Start building your collection by adding movies to your favorites!
+    </p>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="goToMovies()"
+      class="empty-state-button">
+      <mat-icon>explore</mat-icon>
+      Browse Movies
+    </button>
+  </div>
+
+  <!-- Search and Grid (only show if there are favorites) -->
+  <ng-container *ngIf="!isLoading && favoriteMovies.length > 0">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search your favorites...</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterMovies()"
+          placeholder="Search by title, director, or genre"
+          aria-label="Search favorite movies" />
+        <mat-icon matPrefix>search</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          *ngIf="searchTerm"
+          (click)="searchTerm = ''; filterMovies()"
+          aria-label="Clear search">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="search-results-info" *ngIf="searchTerm">
+        <span>{{ filteredFavorites.length }} {{ filteredFavorites.length === 1 ? 'result' : 'results' }} found</span>
+      </div>
+    </div>
+
+    <!-- Movie Grid -->
+    <div class="movie-grid" role="list" aria-label="Favorite movies collection">
+      <mat-card
+        *ngFor="let movie of filteredFavorites"
+        class="movie-card"
+        role="listitem"
+        [attr.aria-label]="'Movie: ' + movie.Title">
+
+        <div class="movie-card-image-container" (click)="openMovieViewDialog(movie)">
+          <img
+            mat-card-image
+            [src]="movie.ImagePath"
+            [alt]="movie.Title + ' poster'"
+            class="movie-image"
+            loading="lazy" />
+          <div class="image-overlay">
+            <span class="view-details-text">View Details</span>
+          </div>
+        </div>
+
+        <mat-card-header class="movie-card-header">
+          <mat-card-title [matTooltip]="movie.Title" matTooltipPosition="above">
+            {{ movie.Title }}
+          </mat-card-title>
+          <mat-card-subtitle>{{ movie.Year }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="movie-card-content">
+          <p class="movie-director">
+            <span class="director-label">Director:</span>
+            <span class="director-name">{{ movie.Director.Name }}</span>
+          </p>
+          <p class="movie-genre">
+            <span class="genre-label">Genre:</span>
+            <span class="genre-name">{{ movie.Genre.Name }}</span>
+          </p>
+        </mat-card-content>
+
+        <mat-card-actions class="movie-card-actions">
+          <button
+            mat-button
+            color="primary"
+            (click)="openGenreDialog(movie.Genre); $event.stopPropagation()"
+            aria-label="View genre information">
+            Genre
+          </button>
+          <button
+            mat-button
+            color="primary"
+            (click)="openDirectorDialog(movie.Director); $event.stopPropagation()"
+            aria-label="View director information">
+            Director
+          </button>
+          <button
+            mat-button
+            color="primary"
+            (click)="openSynopsisDialog(movie.Title, movie.Description); $event.stopPropagation()"
+            aria-label="View movie synopsis">
+            Synopsis
+          </button>
+          <button
+            mat-icon-button
+            (click)="toggleFavorite(movie._id); $event.stopPropagation()"
+            color="accent"
+            aria-label="Remove from favorites"
+            class="favorite-button">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </ng-container>
+</div>

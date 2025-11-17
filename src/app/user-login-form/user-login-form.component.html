@@ -1,23 +1,49 @@
 <!-- src/app/user-login-form/user-login-form.component.html -->
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <form>
-            <mat-form-field>
-                <input matInput [(ngModel)]="loginData.Username" placeholder="Username" type="text" name="Username"
-                    required>
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput [(ngModel)]="loginData.Password" type="password" placeholder="Password" name="Password"
-                    required>
-            </mat-form-field>
-        </form>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-raised-button (click)="loginUser()" color="primary">
-            Login
-        </button>
-    </mat-card-actions>
-</mat-card>
+<div class="auth-dialog">
+  <div class="dialog-header">
+    <div class="header-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+      </svg>
+    </div>
+    <h2 class="dialog-title">Welcome Back</h2>
+    <p class="dialog-subtitle">Sign in to your account</p>
+  </div>
+
+  <form class="auth-form">
+    <mat-form-field appearance="outline" class="auth-field">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        [(ngModel)]="loginData.Username"
+        type="text"
+        name="Username"
+        required
+        autocomplete="username"
+        aria-label="Username" />
+      <mat-icon matPrefix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="auth-field">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [(ngModel)]="loginData.Password"
+        type="password"
+        name="Password"
+        required
+        autocomplete="current-password"
+        aria-label="Password" />
+      <mat-icon matPrefix>lock</mat-icon>
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      class="auth-submit-button"
+      (click)="loginUser()"
+      aria-label="Sign in">
+      <span>Sign In</span>
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </form>
+</div>

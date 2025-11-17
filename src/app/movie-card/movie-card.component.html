@@ -1,49 +1,150 @@
 <!-- src/app/movie-card/movie-card.component.html -->
 <div class="movie-page">
-    <div class="header">
-        <h1>Movies</h1>
-        <div class="navigation-buttons">
-            <button mat-raised-button color="primary" (click)="goToProfile()">Profile</button>
-            <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18,9V7h-2.5L17,4.5L15.5,3L14,4.5V7H10V4.5L8.5,3L7,4.5V7H4.5L3,8.5L4.5,10H7v4H4.5L3,15.5L4.5,17H7v2.5L8.5,21L10,19.5V17h4v2.5L15.5,21L17,19.5V17h2v-2h-2.5L18,13.5L16.5,12H14v-2h4Zm-4,6v-4h-4v4h4Z"/>
+          </svg>
         </div>
+        <div class="logo-text">
+          <span class="letter">J</span><span class="letter">-</span><span class="letter">F</span><span class="letter">L</span><span class="letter">I</span><span class="letter">X</span>
+        </div>
+      </div>
+      <div class="header-title-section">
+        <h1 class="page-title">Discover Movies</h1>
+        <p class="page-subtitle">Browse and explore our collection</p>
+      </div>
+    </div>
+    <nav class="navigation-buttons" aria-label="User navigation">
+      <button
+        mat-flat-button
+        color="accent"
+        (click)="goToFavorites()"
+        aria-label="Go to my favorites">
+        <mat-icon>favorite</mat-icon>
+        My Favorites
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="goToProfile()"
+        aria-label="Go to profile page">
+        Profile
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="logout()"
+        aria-label="Log out of application">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="60" color="accent"></mat-spinner>
+    <p class="loading-text">Loading movies...</p>
+  </div>
+
+  <!-- Search Bar and Movie Grid (only show when not loading) -->
+  <ng-container *ngIf="!isLoading">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search movies...</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterMovies()"
+          placeholder="Search by title, director, or genre"
+          aria-label="Search movies" />
+        <mat-icon matPrefix>search</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          *ngIf="searchTerm"
+          (click)="searchTerm = ''; filterMovies()"
+          aria-label="Clear search">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="search-results-info" *ngIf="searchTerm">
+        <span>{{ filteredMovies.length }} {{ filteredMovies.length === 1 ? 'result' : 'results' }} found</span>
+      </div>
     </div>
 
-    <div class="movie-grid">
-        <!-- === REMOVE (click) from here === -->
-        <mat-card *ngFor="let movie of movies" class="movie-card">
-            <mat-card-header class="movie-card-header">
-                <mat-card-title [matTooltip]="movie.Title" matTooltipPosition="above">
-                    {{ movie.Title }}
-                </mat-card-title>
-                <mat-card-subtitle>{{ movie.Year }}</mat-card-subtitle>
-            </mat-card-header>
+    <div class="movie-grid" role="list" aria-label="Movie collection">
+    <mat-card
+      *ngFor="let movie of filteredMovies; let i = index"
+      class="movie-card"
+      role="listitem"
+      [attr.aria-label]="'Movie: ' + movie.Title">
 
-            <!-- === ADD (click) here === -->
-            <img mat-card-image [src]="movie.ImagePath" [alt]="movie.Title" class="movie-image"
-                (click)="openMovieViewDialog(movie)" />
+      <div class="movie-card-image-container" (click)="openMovieViewDialog(movie)">
+        <img
+          mat-card-image
+          [src]="movie.ImagePath"
+          [alt]="movie.Title + ' poster'"
+          class="movie-image"
+          loading="lazy" />
+        <div class="image-overlay">
+          <span class="view-details-text">View Details</span>
+        </div>
+      </div>
 
-            <mat-card-content>
-                <p class="movie-director">Directed by: {{ movie.Director.Name }}</p>
-            </mat-card-content>
+      <mat-card-header class="movie-card-header">
+        <mat-card-title [matTooltip]="movie.Title" matTooltipPosition="above">
+          {{ movie.Title }}
+        </mat-card-title>
+        <mat-card-subtitle>{{ movie.Year }}</mat-card-subtitle>
+      </mat-card-header>
 
-            <mat-card-actions class="movie-card-actions">
-                <!-- === ADD $event.stopPropagation() to these buttons === -->
-                <button mat-button color="primary" (click)="openGenreDialog(movie.Genre); $event.stopPropagation()">
-                    GENRE
-                </button>
-                <button mat-button color="primary"
-                    (click)="openDirectorDialog(movie.Director); $event.stopPropagation()">
-                    DIRECTOR
-                </button>
-                <button mat-button color="primary"
-                    (click)="openSynopsisDialog(movie.Title, movie.Description); $event.stopPropagation()">
-                    SYNOPSIS
-                </button>
-                <button mat-icon-button (click)="toggleFavorite(movie._id); $event.stopPropagation()"
-                    [color]="isFavorite(movie._id) ? 'accent' : ''">
-                    <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
-                </button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
+      <mat-card-content class="movie-card-content">
+        <p class="movie-director">
+          <span class="director-label">Director:</span>
+          <span class="director-name">{{ movie.Director.Name }}</span>
+        </p>
+        <p class="movie-genre">
+          <span class="genre-label">Genre:</span>
+          <span class="genre-name">{{ movie.Genre.Name }}</span>
+        </p>
+      </mat-card-content>
+
+      <mat-card-actions class="movie-card-actions">
+        <button
+          mat-button
+          color="primary"
+          (click)="openGenreDialog(movie.Genre); $event.stopPropagation()"
+          aria-label="View genre information">
+          Genre
+        </button>
+        <button
+          mat-button
+          color="primary"
+          (click)="openDirectorDialog(movie.Director); $event.stopPropagation()"
+          aria-label="View director information">
+          Director
+        </button>
+        <button
+          mat-button
+          color="primary"
+          (click)="openSynopsisDialog(movie.Title, movie.Description); $event.stopPropagation()"
+          aria-label="View movie synopsis">
+          Synopsis
+        </button>
+        <button
+          mat-icon-button
+          (click)="toggleFavorite(movie._id); $event.stopPropagation()"
+          [color]="isFavorite(movie._id) ? 'accent' : ''"
+          [attr.aria-label]="isFavorite(movie._id) ? 'Remove from favorites' : 'Add to favorites'"
+          class="favorite-button">
+          <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  </ng-container>
 </div>

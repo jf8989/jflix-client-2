@@ -9,7 +9,11 @@ import { SynopsisDialogComponent } from '../synopsis-dialog/synopsis-dialog.comp
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog.component';
@@ -19,13 +23,18 @@ import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss',
+  animations: [],
 })
 
 /**
@@ -41,9 +50,21 @@ export class MovieCardComponent implements OnInit {
    */
   movies: any[] = [];
   /**
+   * Filtered movies based on search term
+   */
+  filteredMovies: any[] = [];
+  /**
+   * Search term for filtering movies
+   */
+  searchTerm: string = '';
+  /**
    * An array holding the IDs of the user's favorite movies, loaded from localStorage.
    */
   favorites: any[] = [];
+  /**
+   * Loading state for fetching movies
+   */
+  isLoading: boolean = true;
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -77,28 +98,61 @@ export class MovieCardComponent implements OnInit {
    * Populates the `movies` array.
    */
   getMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      console.log('Original API response:', resp);
+    this.isLoading = true;
+    this.fetchApiData.getAllMovies().subscribe({
+      next: (resp: any) => {
+        console.log('Original API response:', resp);
 
-      // Transform the API response to match expected property names
-      this.movies = resp.map((movie: any) => ({
-        _id: movie._id,
-        Title: movie.title, // Map title to Title
-        Year: movie.releaseYear,
-        ImagePath: movie.imageURL, // Map imageURL to ImagePath
-        Description: movie.description, // Map description to Description
-        Director: {
-          Name: movie.director?.name || '',
-          Bio: movie.director?.bio || '',
-        },
-        Genre:
-          Array.isArray(movie.genres) && movie.genres.length > 0
-            ? { Name: movie.genres[0].name, Description: '' }
-            : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
-      }));
+        // Transform the API response to match expected property names
+        this.movies = resp.map((movie: any) => ({
+          _id: movie._id,
+          Title: movie.title, // Map title to Title
+          Year: movie.releaseYear,
+          ImagePath: movie.imageURL, // Map imageURL to ImagePath
+          Description: movie.description, // Map description to Description
+          Director: {
+            Name: movie.director?.name || '',
+            Bio: movie.director?.bio || '',
+          },
+          Genre:
+            Array.isArray(movie.genres) && movie.genres.length > 0
+              ? { Name: movie.genres[0].name, Description: '' }
+              : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
+        }));
 
-      console.log('Transformed movies:', this.movies);
+        // Initialize filtered movies with all movies
+        this.filteredMovies = [...this.movies];
+        this.isLoading = false;
+
+        console.log('Transformed movies:', this.movies);
+      },
+      error: (err) => {
+        console.error('Error fetching movies:', err);
+        this.isLoading = false;
+        this.snackBar.open('Failed to load movies', 'OK', {
+          duration: 3000,
+        });
+      },
     });
+  }
+
+  /**
+   * Filters movies based on search term
+   * Searches in title, director name, and genre
+   */
+  filterMovies(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      this.filteredMovies = [...this.movies];
+      return;
+    }
+
+    this.filteredMovies = this.movies.filter(movie =>
+      movie.Title?.toLowerCase().includes(term) ||
+      movie.Director?.Name?.toLowerCase().includes(term) ||
+      movie.Genre?.Name?.toLowerCase().includes(term)
+    );
   }
 
   /**
@@ -243,6 +297,13 @@ export class MovieCardComponent implements OnInit {
       console.log('Dialog closed, checking favorites again from localStorage');
       this.getFavorites(); // Re-fetch favorites from localStorage to update icons
     });
+  }
+
+  /**
+   * Navigates the user to their favorites page ('/favorites').
+   */
+  goToFavorites(): void {
+    this.router.navigate(['favorites']);
   }
 
   /**

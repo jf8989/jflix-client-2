@@ -1,11 +1,12 @@
 // src/app/app.component.ts
 
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, ChildrenOutletContexts } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { MatButtonModule } from '@angular/material/button';
+import { routeTransitionAnimation } from './animations';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [RouterOutlet, MatButtonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [routeTransitionAnimation],
 })
 
 /**
@@ -23,7 +25,19 @@ import { MatButtonModule } from '@angular/material/button';
 export class AppComponent {
   title = 'J-Flix-Angular-client';
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private contexts: ChildrenOutletContexts
+  ) {}
+
+  /**
+   * Gets route animation data for smooth page transitions
+   */
+  getRouteAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.[
+      'animation'
+    ];
+  }
 
   /**
    * Opens the user registration dialog using MatDialog.

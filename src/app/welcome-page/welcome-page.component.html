@@ -1,12 +1,76 @@
 <!-- src/app/welcome-page/welcome-page.component.html -->
 <div class="welcome-container">
-    <h1>Welcome to J-Flix!</h1>
-    <div class="button-container">
-        <button mat-raised-button color="primary" (click)="openUserRegistrationDialog()">
-            Sign Up
-        </button>
-        <button mat-raised-button color="primary" (click)="openUserLoginDialog()">
-            Login
-        </button>
+  <!-- Animated Background -->
+  <div class="film-strip top"></div>
+  <div class="film-strip bottom"></div>
+  <div class="spotlight"></div>
+
+  <!-- Main Content -->
+  <div class="hero-content" @fadeIn>
+    <!-- Logo/Title Area -->
+    <div class="brand-section" @slideUp>
+      <div class="film-reel-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18,9V7h-2.5L17,4.5L15.5,3L14,4.5V7H10V4.5L8.5,3L7,4.5V7H4.5L3,8.5L4.5,10H7v4H4.5L3,15.5L4.5,17H7v2.5L8.5,21L10,19.5V17h4v2.5L15.5,21L17,19.5V17h2v-2h-2.5L18,13.5L16.5,12H14v-2h4Zm-4,6v-4h-4v4h4Z"/>
+        </svg>
+      </div>
+      <h1 class="brand-title">
+        <span class="title-wrapper">
+          <span class="letter">J</span>
+          <span class="letter">-</span>
+          <span class="letter">F</span>
+          <span class="letter">L</span>
+          <span class="letter">I</span>
+          <span class="letter">X</span>
+        </span>
+      </h1>
+      <p class="tagline">Your Personal Cinema</p>
     </div>
+
+    <!-- Feature Cards -->
+    <div class="features-grid" @slideUp>
+      <div class="feature-card">
+        <div class="card-icon">🎬</div>
+        <h3>Discover</h3>
+        <p>Browse thousands of movies</p>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon">⭐</div>
+        <h3>Collect</h3>
+        <p>Save your favorites</p>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon">🎯</div>
+        <h3>Explore</h3>
+        <p>Dive into details</p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section" @slideUp>
+      <button
+        mat-flat-button
+        class="primary-action"
+        (click)="openUserRegistrationDialog()"
+        aria-label="Create new account">
+        <span>Get Started</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 0l2 8h8l-6.5 5 2.5 7-6-4.5L3.5 20l2.5-7L0 8h8z"/>
+        </svg>
+      </button>
+
+      <button
+        mat-stroked-button
+        class="secondary-action"
+        (click)="openUserLoginDialog()"
+        aria-label="Sign in to existing account">
+        Sign In
+      </button>
+    </div>
+
+    <!-- Bottom Info -->
+    <div class="info-section" @fadeIn>
+      <p class="info-text">Join thousands of movie enthusiasts</p>
+    </div>
+  </div>
 </div>

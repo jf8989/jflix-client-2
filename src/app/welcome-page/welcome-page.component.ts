@@ -5,6 +5,7 @@ import { UserLoginFormComponent } from '../user-login-form/user-login-form.compo
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { fadeInAnimation, slideUpAnimation } from '../animations';
 
 @Component({
   selector: 'app-welcome-page',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, MatButtonModule],
   templateUrl: './welcome-page.component.html',
   styleUrl: './welcome-page.component.scss',
+  animations: [fadeInAnimation, slideUpAnimation],
 })
 
 /**
@@ -26,7 +28,8 @@ export class WelcomePageComponent {
    */
   openUserRegistrationDialog(): void {
     this.dialog.open(UserRegistrationFormComponent, {
-      width: '280px',
+      width: 'auto',
+      maxWidth: '90vw',
     });
   }
 
@@ -35,7 +38,8 @@ export class WelcomePageComponent {
    */
   openUserLoginDialog(): void {
     this.dialog.open(UserLoginFormComponent, {
-      width: '280px',
+      width: 'auto',
+      maxWidth: '90vw',
     });
   }
 }
