@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,6 +30,7 @@ import { MovieViewDialogComponent } from '../movie-view-dialog/movie-view-dialog
     MatFormFieldModule,
     MatInputModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss',
@@ -59,6 +61,10 @@ export class MovieCardComponent implements OnInit {
    * An array holding the IDs of the user's favorite movies, loaded from localStorage.
    */
   favorites: any[] = [];
+  /**
+   * Loading state for fetching movies
+   */
+  isLoading: boolean = true;
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -92,30 +98,41 @@ export class MovieCardComponent implements OnInit {
    * Populates the `movies` array.
    */
   getMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-      console.log('Original API response:', resp);
+    this.isLoading = true;
+    this.fetchApiData.getAllMovies().subscribe({
+      next: (resp: any) => {
+        console.log('Original API response:', resp);
 
-      // Transform the API response to match expected property names
-      this.movies = resp.map((movie: any) => ({
-        _id: movie._id,
-        Title: movie.title, // Map title to Title
-        Year: movie.releaseYear,
-        ImagePath: movie.imageURL, // Map imageURL to ImagePath
-        Description: movie.description, // Map description to Description
-        Director: {
-          Name: movie.director?.name || '',
-          Bio: movie.director?.bio || '',
-        },
-        Genre:
-          Array.isArray(movie.genres) && movie.genres.length > 0
-            ? { Name: movie.genres[0].name, Description: '' }
-            : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
-      }));
+        // Transform the API response to match expected property names
+        this.movies = resp.map((movie: any) => ({
+          _id: movie._id,
+          Title: movie.title, // Map title to Title
+          Year: movie.releaseYear,
+          ImagePath: movie.imageURL, // Map imageURL to ImagePath
+          Description: movie.description, // Map description to Description
+          Director: {
+            Name: movie.director?.name || '',
+            Bio: movie.director?.bio || '',
+          },
+          Genre:
+            Array.isArray(movie.genres) && movie.genres.length > 0
+              ? { Name: movie.genres[0].name, Description: '' }
+              : { Name: movie.genre?.name || 'Uncategorized', Description: '' },
+        }));
 
-      // Initialize filtered movies with all movies
-      this.filteredMovies = [...this.movies];
+        // Initialize filtered movies with all movies
+        this.filteredMovies = [...this.movies];
+        this.isLoading = false;
 
-      console.log('Transformed movies:', this.movies);
+        console.log('Transformed movies:', this.movies);
+      },
+      error: (err) => {
+        console.error('Error fetching movies:', err);
+        this.isLoading = false;
+        this.snackBar.open('Failed to load movies', 'OK', {
+          duration: 3000,
+        });
+      },
     });
   }
 

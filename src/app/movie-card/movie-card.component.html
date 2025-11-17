@@ -43,32 +43,40 @@
     </nav>
   </header>
 
-  <!-- Search Bar -->
-  <div class="search-container">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Search movies...</mat-label>
-      <input
-        matInput
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="filterMovies()"
-        placeholder="Search by title, director, or genre"
-        aria-label="Search movies" />
-      <mat-icon matPrefix>search</mat-icon>
-      <button
-        mat-icon-button
-        matSuffix
-        *ngIf="searchTerm"
-        (click)="searchTerm = ''; filterMovies()"
-        aria-label="Clear search">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <div class="search-results-info" *ngIf="searchTerm">
-      <span>{{ filteredMovies.length }} {{ filteredMovies.length === 1 ? 'result' : 'results' }} found</span>
-    </div>
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="60" color="accent"></mat-spinner>
+    <p class="loading-text">Loading movies...</p>
   </div>
 
-  <div class="movie-grid" role="list" aria-label="Movie collection">
+  <!-- Search Bar and Movie Grid (only show when not loading) -->
+  <ng-container *ngIf="!isLoading">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search movies...</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterMovies()"
+          placeholder="Search by title, director, or genre"
+          aria-label="Search movies" />
+        <mat-icon matPrefix>search</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          *ngIf="searchTerm"
+          (click)="searchTerm = ''; filterMovies()"
+          aria-label="Clear search">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="search-results-info" *ngIf="searchTerm">
+        <span>{{ filteredMovies.length }} {{ filteredMovies.length === 1 ? 'result' : 'results' }} found</span>
+      </div>
+    </div>
+
+    <div class="movie-grid" role="list" aria-label="Movie collection">
     <mat-card
       *ngFor="let movie of filteredMovies; let i = index"
       class="movie-card"
@@ -138,4 +146,5 @@
       </mat-card-actions>
     </mat-card>
   </div>
+  </ng-container>
 </div>
