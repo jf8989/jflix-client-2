@@ -1,10 +1,12 @@
 /* Cinematic Auth Dialog */
 .auth-dialog {
   background: linear-gradient(180deg, #1a1a2e 0%, #0a0a0a 100%);
-  padding: var(--space-4xl);
+  padding: var(--space-3xl);
   width: 100%;
-  min-width: 550px;
-  max-width: 600px;
+  min-width: 500px;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow-y: auto;
   border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 215, 0, 0.2);
   box-sizing: border-box;
@@ -13,13 +15,13 @@
     min-width: unset;
     width: calc(100vw - 32px);
     max-width: calc(100vw - 32px);
-    padding: var(--space-2xl);
-    margin: 16px;
+    padding: var(--space-xl);
+    max-height: 95vh;
   }
 
   @media (min-width: 641px) and (max-width: 768px) {
-    min-width: 480px;
-    padding: var(--space-3xl);
+    min-width: 450px;
+    padding: var(--space-2xl);
   }
 }
 

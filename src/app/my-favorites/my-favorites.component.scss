@@ -9,8 +9,8 @@
   max-width: 1600px;
   margin: 0 auto;
   min-height: 100vh;
-  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-  background-attachment: fixed;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (max-width: 768px) {
     padding: var(--space-lg) var(--space-md);
